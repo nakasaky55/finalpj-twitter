@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import "./App.css";
+import Landing from "./components/view/landing";
+import Dashboard from "./components/view/dashboard";
 
-function App() {
+function App(props) {
+  const [user, setUser] = useState({
+    user: "Anonymous"
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <Route
+        path="/landing"
+        render={() => <Landing {...props} setUser={setUser} />}
+      />
+      <Route
+        path="/"
+        render={() => <Dashboard {...props} user={user} setUser={setUser} />}
+      />
+    </Switch>
   );
 }
 
