@@ -1,57 +1,48 @@
 import React, { useState } from "react";
-import { Container, Col, Row, Form, Button } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap";
 import Login from "../ultilities/login-page";
 import Signup from "../ultilities/sign-up";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useHistory,
-  useLocation
-} from "react-router-dom";
-
-
+import ForgotPassword from "../ultilities/forgot";
+import { Switch, Route, useHistory, useLocation } from "react-router-dom";
+import NewPassword from "../ultilities/newpassword";
 
 export default function Landing(props) {
   const history = useHistory();
   const location = useLocation();
-  console.log("asdasdasd", history)
+  console.log("asdasdasd", history);
   const goSignup = () => {
-    history.push("/landing/" +"sign-up");
+    history.push("/landing/" + "sign-up");
   };
 
   //Toast login
   const [showA, setShowA] = useState("none");
 
-  const toggleShowA = () => {
-    if (showA == "none") {
-      setShowA("block");
-    } else setShowA("none");
+  const toggleShowA = val => {
+    setShowA(val);
   };
 
-console.log("showA", showA)
+  console.log("showA", showA);
   // Login response
-  const handleSubmitLogin = async event => {
-    event.preventDefault();
-    const inputData = {
-      email: event.target.email.value,
-      password: event.target.password.value
-    };
+  // const handleSubmitLogin = async event => {
+  //   event.preventDefault();
+  //   const inputData = {
+  //     email: event.target.email.value,
+  //     password: event.target.password.value
+  //   };
 
-    const resp = await fetch("https://127.0.0.1:5000/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Token abc"
-      },
-      body: JSON.stringify(inputData)
-    });
-    const data = await resp.json();
+  //   const resp = await fetch("https://127.0.0.1:5000/user/login", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json",
+  //       Authorization: "Token abc"
+  //     },
+  //     body: JSON.stringify(inputData)
+  //   });
+  //   const data = await resp.json();
 
-    console.log("data returns from api", data);
-  };
+  //   console.log("data returns from api", data);
+  // };
   return (
     <>
       <Container className="landing" fluid="true">
@@ -104,8 +95,33 @@ console.log("showA", showA)
             </ul>
           </Col>
           <Switch>
-            <Route exact path="/landing/" render={() => <Login setUser={props.setUser} goSignup={goSignup} showA={showA} toggleShowA={toggleShowA} />} />
-            <Route exact path="/landing/sign-up" render={() => <Signup toggleShowA={toggleShowA} />} />
+            <Route
+              exact
+              path="/landing"
+              render={() => (
+                <Login
+                  setUser={props.setUser}
+                  goSignup={goSignup}
+                  showA={showA}
+                  toggleShowA={toggleShowA}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/landing/sign-up"
+              render={() => <Signup toggleShowA={toggleShowA} />}
+            />
+            <Route
+              exact
+              path="/landing/forgot_password"
+              render={() => <ForgotPassword toggleShowA={toggleShowA} />}
+            />
+            <Route
+              exact
+              path="/landing/new_password/:token"
+              render={() => <NewPassword toggleShowA={toggleShowA} />}
+            />
           </Switch>
         </Row>
       </Container>

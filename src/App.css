@@ -1,3 +1,7 @@
+body{
+  min-width:770px;
+}
+
 .App {
   text-align: center;
 }

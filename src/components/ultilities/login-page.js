@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Col, Form, Toast } from "react-bootstrap";
-import {useHistory} from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 
 export default function Login(props) {
-  const history = useHistory()
+  const history = useHistory();
   const goDashboard = () => {
     history.push("/");
   };
@@ -19,7 +19,7 @@ export default function Login(props) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        Accept: "application/json"
       },
       body: JSON.stringify(inputData)
     });
@@ -27,9 +27,9 @@ export default function Login(props) {
 
     console.log("data returns from api", data);
 
-    if(data.state){
-      sessionStorage.setItem('token', data.token);
-      goDashboard()
+    if (data.state) {
+      sessionStorage.setItem("token", data.token);
+      goDashboard();
     }
   };
   return (
@@ -91,7 +91,11 @@ export default function Login(props) {
               />
             </Form.Group>
             <Form.Group controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Check me out" />
+              <p>
+                <button className="btn-signup" onClick={() => history.push("/landing/forgot_password")}>
+                Forgot your password ?
+                </button>
+              </p>
             </Form.Group>
             <button type="submit" className="btn-signin">
               Sign in

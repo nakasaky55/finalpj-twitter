@@ -1,13 +1,22 @@
-import React from "react";
-import { Col, Form, Container, Row } from "react-bootstrap";
+import React, {useEffect, useState} from "react";
+import { Col, Form, Toast } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 export default function Signup(props) {
   const history = useHistory();
+  const [showDuplicated, setDuplicated] = useState('none')
   const goLanding = () => {
-    props.toggleShowA();
+    props.toggleShowA('block');
     history.push("/landing");
   };
+
+  const toggleShowDuplicated = (val) => {
+    setDuplicated(val)
+  }
+
+  const toggleCloseDuplicated = () => {
+    setDuplicated('none')
+  }
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -30,8 +39,15 @@ export default function Signup(props) {
 
     if (data.state == "success") {
       goLanding();
+    } else if (data.state === "duplicate"){
+      toggleShowDuplicated('block')
     }
   };
+
+  useEffect(() => {
+    props.toggleShowA('none')
+    toggleShowDuplicated('none')
+  }, [])
   return (
     <Col className="right-landing d-flex justify-content-center align-items-center">
       <div className="landing-login">
@@ -41,6 +57,21 @@ export default function Signup(props) {
           </p>
           <h1>See what’s happening in the world right now</h1>
           <hr></hr>
+          <Toast
+              show={showDuplicated}
+              onClose={toggleCloseDuplicated}
+              style={{ display: showDuplicated }}
+            >
+              <Toast.Header className="bg-warning text-black">
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded mr-2"
+                  alt=""
+                />
+                <strong className="mr-auto">Email is taken</strong>
+              </Toast.Header>
+              {/* <Toast.Body>You're successfully sign up.</Toast.Body> */}
+            </Toast>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control name="email" type="email" placeholder="Enter email" />
