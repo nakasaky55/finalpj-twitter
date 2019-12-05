@@ -94,35 +94,42 @@ export default function Landing(props) {
               </li>
             </ul>
           </Col>
-          <Switch>
-            <Route
-              exact
-              path="/landing"
-              render={() => (
-                <Login
-                  setUser={props.setUser}
-                  goSignup={goSignup}
-                  showA={showA}
-                  toggleShowA={toggleShowA}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/landing/sign-up"
-              render={() => <Signup toggleShowA={toggleShowA} />}
-            />
-            <Route
-              exact
-              path="/landing/forgot_password"
-              render={() => <ForgotPassword toggleShowA={toggleShowA} />}
-            />
-            <Route
-              exact
-              path="/landing/new_password/:token"
-              render={() => <NewPassword toggleShowA={toggleShowA} />}
-            />
-          </Switch>
+          <Col
+            className="right-landing d-flex justify-content-center align-items-center"
+            xs={6}
+            md={6}
+            sm={12}
+          >
+            <Switch>
+              <Route
+                exact
+                path="/landing"
+                render={() => (
+                  <Login
+                    setUser={props.setUser}
+                    goSignup={goSignup}
+                    showA={showA}
+                    toggleShowA={toggleShowA}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path="/landing/sign-up"
+                render={() => <Signup toggleShowA={toggleShowA} />}
+              />
+              <Route
+                exact
+                path="/landing/forgot_password"
+                render={() => <ForgotPassword toggleShowA={toggleShowA} />}
+              />
+              <Route
+                exact
+                path="/landing/new_password/:token"
+                render={() => <NewPassword toggleShowA={toggleShowA} />}
+              />
+            </Switch>
+          </Col>
         </Row>
       </Container>
     </>

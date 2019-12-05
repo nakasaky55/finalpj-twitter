@@ -1,9 +1,9 @@
 import React from "react";
 import { Col, Form } from "react-bootstrap";
-import {useHistory} from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 
 export default function Forgot(props) {
-  const history = useHistory()
+  const history = useHistory();
   const handleSubmit = async event => {
     event.preventDefault();
     const inputData = {
@@ -20,13 +20,13 @@ export default function Forgot(props) {
 
     const resp = await url.json();
 
-    if(resp.message === "Success"){
+    if (resp.message === "Success") {
       props.toggleShowA();
-      history.push("/")
+      history.push("/");
     }
   };
   return (
-    <Col className="right-landing d-flex justify-content-center align-items-center">
+    <>
       <div className="landing-login">
         <h1>Enter your email</h1>
         <Form onSubmit={e => handleSubmit(e)}>
@@ -47,6 +47,6 @@ export default function Forgot(props) {
           </button>
         </Form>
       </div>
-    </Col>
+    </>
   );
 }

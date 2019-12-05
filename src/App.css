@@ -36,12 +36,12 @@ body{
   /* background-image: url("image/bird.svg"); */
   /* background-size: contain; */
   font-size: 16px;
-  line-height: 20px;
+  /* line-height: 20px; */
 }
 
 .landing-list {
   color: #fff;
-  max-width: 440px;
+  /* max-width: 440px; */
   padding: 0 16px;
   position: relative;
 }
@@ -62,6 +62,7 @@ body{
   overflow: hidden;
 }
 .right-landing {
+  height:100vh;
   color: black;
   background-color: white;
 }
