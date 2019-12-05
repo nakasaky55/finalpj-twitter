@@ -35,6 +35,10 @@
   /* line-height: 20px; */
 }
 
+.landing > .row {
+  max-width: 100%;
+}
+
 .landing-list {
   color: #fff;
   /* max-width: 440px; */
