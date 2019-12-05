@@ -85,7 +85,13 @@ export default function Dashboard(props) {
 
     .contains {
       background-color: black;
+      padding:0;
     }
+    .contains > .row {
+      width:100%;
+      margin:0;
+    }
+    
     .sb-child {
       min-height: 100vh;
       font-size: 19px;
