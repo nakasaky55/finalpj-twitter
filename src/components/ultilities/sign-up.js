@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form, Toast } from "react-bootstrap";
+import {  Form, Toast } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 export default function Signup(props) {
@@ -27,7 +27,7 @@ export default function Signup(props) {
       address: "testing"
     };
 
-    const resp = await fetch("https://127.0.0.1:5000/user/signup", {
+    const resp = await fetch(`${process.env.REACT_APP_PATH}/user/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 export default function Forgot(props) {
@@ -9,14 +9,17 @@ export default function Forgot(props) {
     const inputData = {
       email: event.target.email.value
     };
-    const url = await fetch("https://127.0.0.1:5000/user/forgot_password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify(inputData)
-    });
+    const url = await fetch(
+      `${process.env.REACT_APP_PATH}/user/forgot_password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(inputData)
+      }
+    );
 
     const resp = await url.json();
 

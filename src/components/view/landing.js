@@ -3,13 +3,12 @@ import { Container, Col, Row } from "react-bootstrap";
 import Login from "../ultilities/login-page";
 import Signup from "../ultilities/sign-up";
 import ForgotPassword from "../ultilities/forgot";
-import { Switch, Route, useHistory, useLocation } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import NewPassword from "../ultilities/newpassword";
 
 export default function Landing(props) {
   const history = useHistory();
-  const location = useLocation();
-  console.log("asdasdasd", history);
+  
   const goSignup = () => {
     history.push("/landing/" + "sign-up");
   };
@@ -46,6 +45,7 @@ export default function Landing(props) {
   return (
     <>
       <Container className="landing" fluid="true">
+        <h1>{process.env.REACT_APP_PATH}</h1>
         <Row>
           <Col
             className="left-landing d-flex justify-content-center align-items-center"

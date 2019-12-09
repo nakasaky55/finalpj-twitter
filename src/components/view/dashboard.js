@@ -1,66 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React,{useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import MainContent from "../ultilities/main-content";
 
 export default function Dashboard(props) {
-  const [token, setToken] = useState(sessionStorage.getItem("token"));
-  const setUpUser = () => {
-    if (token) return true;
-    return false;
-  };
-
-  //query user
-  const getUser = async () => {
-    const url = await fetch("https://127.0.0.1:5000/user/get_user", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Token ` + token
-      }
-    });
-
-    const resp = await url.json();
-
-    props.setUser({
-      user: {
-        username: resp.username,
-        email: resp.email
-      }
-    });
-  };
-  const findToken = setUpUser();
-
-  useEffect(() => {
-    getUser();
-    console.log("runnn effect ")
-  }, [findToken === true]);
-
   const history = useHistory();
-  if (!findToken) {
-    console.log("check run")
+  if (!props.findToken) {
     history.push("/landing");
   } else {
     console.log(props.user);
   }
 
   const doLogout = async () => {
-    const url = await fetch('https://127.0.0.1:5000/user/logout',
-    {
+    console.log(`${process.env.REACT_APP_PATH}/user/logout`);
+    const url = await fetch(`${process.env.REACT_APP_PATH}/user/logout`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Token ` + token
+        Authorization: `Token ` + sessionStorage.getItem("token")
       }
-    })
+    });
 
-    const resp = await url.json()
-    if( resp.message == "success"){
-      sessionStorage.removeItem('token');
-      history.push("/landing")
-    } else console.log("fail")
-  }
+    const resp = await url.json();
+    if (resp.message === "success") {
+      sessionStorage.removeItem("token");
+      history.push("/landing");
+      props.setUser({ user: "Anonymous" });
+    } else console.log("fail");
+  };
+
+  useEffect(() => {
+    props.getUser();
+  }, [])
   return (
     <>
       <style type="text/css">
@@ -140,8 +112,8 @@ export default function Dashboard(props) {
     
     
     .content {
-      background-color: purple;
-      height: 110vh;
+      background-color: white;
+      min-height: 100vh;
     }
     .trending {
       background-color: orange;
@@ -219,15 +191,23 @@ export default function Dashboard(props) {
                 </Button>
               </div>
               <div className="sidebar_nav_items">
-                <Button className="btn-custom logout-btn " onClick={() => doLogout()}>
+                <Button
+                  className="btn-custom logout-btn "
+                  onClick={() => doLogout()}
+                >
                   <i class="fas fa-sign-out-alt"></i>
                   <span className="sidebar_nav_text">Logout</span>
                 </Button>
               </div>
             </nav>
           </Col>
-          <Col lg={7} md={10} sm={12} className="sb-child content text-white">
+          <Col lg={8} md={10} sm={12} className="sb-child content">
             Welcome {props.user.user.username}!
+            <MainContent
+              token={props.token}
+              findToken={props.findToken}
+              user={props.user}
+            />
           </Col>
           <Col className="sb-child trending d-none d-lg-block">Trending</Col>
         </Row>

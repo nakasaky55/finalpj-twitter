@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Col, Form, Toast } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 export default function NewPassword(props) {
   //Toast login
-  const [showMessage, setshowMessage] = useState("none");
+  // const [showMessage, setshowMessage] = useState("none");
   const [tokenValid, setTokenValid] = useState(true);
 
   const param = useParams();
 
   const checkTokenValid = async () => {
     const resp = await fetch(
-      `https://127.0.0.1:5000/user/new_password/` + param.token,
+      `${process.env.REACT_APP_PATH}/user/new_password/` + param.token,
       {
         method: "GET",
         headers: {
@@ -21,7 +21,7 @@ export default function NewPassword(props) {
       }
     );
     const data = await resp.json();
-    if (data.message == "invalid") setTokenValid(false);
+    if (data.message === "invalid") setTokenValid(false);
   };
 
   const handleSubmit = async event => {
@@ -32,7 +32,7 @@ export default function NewPassword(props) {
     };
 
     const resp = await fetch(
-      `https://127.0.0.1:5000/user/new_password/` + param.token,
+      `${process.env.REACT_APP_PATH}/user/new_password/` + param.token,
       {
         method: "POST",
         headers: {
@@ -44,7 +44,7 @@ export default function NewPassword(props) {
     );
     const data = await resp.json();
 
-    if (data.message == "Success") {
+    if (data.message === "Success") {
       props.toggleShowA();
     }
   };

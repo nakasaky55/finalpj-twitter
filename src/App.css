@@ -26,8 +26,6 @@
   padding: 0;
 }
 
-
-
 /* ########################## Landing  #############################*/
 .landing {
   /* background-image: url("image/bird.svg"); */
@@ -48,13 +46,13 @@
 }
 
 .landing-login {
-  width :40%
+  width: 40%;
 }
 
 .landing-list-item {
   margin: 48px auto;
   font-size: 18px;
-  font-weight: bold ;
+  font-weight: bold;
 }
 
 .left-landing {
@@ -63,7 +61,7 @@
   overflow: hidden;
 }
 .right-landing {
-  height:100vh;
+  height: 100vh;
   color: black;
   background-color: white;
 }
@@ -95,7 +93,33 @@ ul {
   transition: 0.5s ease;
 }
 
-.fa-twitter{ 
+.fa-twitter {
   font-size: 50px;
   color: #1da1f2;
+}
+
+
+.hastag-markup {
+  color: blue;
+  cursor:pointer;
+}
+
+.btn-function{
+  border: none;
+  background-color: white;
+}
+
+
+/* ############################# post detail ######################### */
+.post-detail {
+  max-width: 100%;
+}
+
+.post-detail-content{
+  width: 100%;
+}
+
+.image-post-detail {
+  max-height: 40px;
+  margin-right:10px;
 }
