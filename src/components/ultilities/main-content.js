@@ -4,12 +4,24 @@ import {
   Col,
   Image,
   Form,
-  Container
+  Container,
+  Spinner,
+  Modal,
+  Button
 } from "react-bootstrap";
 import PostDetail from "./posts/postDetail";
+import { List } from "react-content-loader";
 
 export default function MainConent(props) {
+  //control modal comment show/hide
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  //get input to create post when user submit
   const [input, setInput] = useState("");
+
+  //check status of creating a post
   const [controlPosting, setControlPosting] = useState(false);
 
   //posts to display on main content
@@ -24,31 +36,33 @@ export default function MainConent(props) {
       content: input.trim(),
       hastags: tempHastag
     };
-
+    console.log("run create post");
     const resp = await fetch(`${process.env.REACT_APP_PATH}/posts/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: "Token " + props.token
+        Authorization: "Token " + sessionStorage.getItem("token")
       },
       body: JSON.stringify(inputData)
     });
     const data = await resp.json();
-    
+
     setControlPosting(false);
     setInput("");
     document.getElementById("input-markup").innerHTML = "";
+    if (!controlPosting) {
+      getPosts();
+    }
   };
 
   const getPosts = async () => {
-    
     const resp = await fetch(`${process.env.REACT_APP_PATH}/posts/get_posts`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: "Token " + props.token
+        Authorization: "Token " + sessionStorage.getItem("token")
       }
     });
     const data = await resp.json();
@@ -81,7 +95,7 @@ export default function MainConent(props) {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: "Token " + props.token
+        Authorization: "Token " + sessionStorage.getItem("token")
       }
     });
     const data = await resp.json();
@@ -89,7 +103,8 @@ export default function MainConent(props) {
 
   useEffect(() => {
     getPosts();
-  }, [props.findToken === true]);
+  }, [sessionStorage.getItem("token")]);
+
   return (
     <>
       <style>
@@ -164,7 +179,7 @@ export default function MainConent(props) {
                       }
                       return item;
                     });
-                    
+
                     document.getElementById(
                       "input-markup"
                     ).innerHTML = htmlString.join(" ");
@@ -185,7 +200,7 @@ export default function MainConent(props) {
                 className="btn-post"
                 type="submit"
               >
-                Post
+                {controlPosting ? <Spinner animation="grow" /> : "Post"}
               </button>
             </div>
           </Form>
@@ -193,11 +208,38 @@ export default function MainConent(props) {
       </Row>
       <Row>
         <Container>
-          {posts.map(post => {
-            return <PostDetail post={post} token={props.token} user={props.user}/>;
-          })}
+          {props.loadUser || controlPosting ? (
+            <Row>
+              <List className="loader-custom" />
+            </Row>
+          ) : (
+            posts.map(post => {
+              return (
+                <PostDetail
+                  post={post}
+                  token={sessionStorage.getItem("token")}
+                  user={props.user}
+                  handleShow={handleShow}
+                />
+              );
+            })
+          )}
         </Container>
       </Row>
+      <Modal show={show} onHide={handleClose} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

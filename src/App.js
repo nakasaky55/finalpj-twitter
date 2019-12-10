@@ -5,19 +5,22 @@ import Landing from "./components/view/landing";
 import Dashboard from "./components/view/dashboard";
 
 function App(props) {
+  console.log("run app")
   const [user, setUser] = useState({
     user: "Anonymous"
   });
-  console.log(user);
+  // console.log(user);
   const [token, setToken] = useState(sessionStorage.getItem("token"));
+  const [loadUser, setLoadUser] = useState(false)
   const setUpUser = () => {
-    if (token) return true;
+    if (sessionStorage.getItem("token")) return true;
     return false;
   };
-
+  const findToken = setUpUser();
   //query user
   const getUser = async () => {
-    const url = await fetch("https://127.0.0.1:5000/user/get_user", {
+    setLoadUser(true)
+    const url = await fetch(`${process.env.REACT_APP_PATH}/user/get_user`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -35,13 +38,13 @@ function App(props) {
         id: resp.id
       }
     });
+    setLoadUser(false)
   };
-  const findToken = setUpUser();
+  
 
   useEffect(() => {
     getUser();
-  }, [findToken === true]);
-
+  }, []);
 
   return (
     <Switch>
@@ -56,8 +59,8 @@ function App(props) {
             {...props}
             user={user}
             setUser={setUser}
-            token={token}
             findToken={findToken}
+            loadUser={loadUser}
             getUser={getUser}
           />
         )}

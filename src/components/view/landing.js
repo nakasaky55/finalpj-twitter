@@ -20,7 +20,6 @@ export default function Landing(props) {
     setShowA(val);
   };
 
-  console.log("showA", showA);
   // Login response
   // const handleSubmitLogin = async event => {
   //   event.preventDefault();

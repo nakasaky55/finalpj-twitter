@@ -3,8 +3,10 @@ import { Form, Toast } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 export default function Login(props) {
+  // console.log("login prop", props)
   const history = useHistory();
   const goDashboard = () => {
+    console.log("run dashboard")
     history.push("/");
   };
 
@@ -25,10 +27,11 @@ export default function Login(props) {
     });
     const data = await resp.json();
 
-    console.log("data returns from api", data);
+    
 
     if (data.state) {
       sessionStorage.setItem("token", data.token);
+      console.log("data returns from api", data.state);
       goDashboard();
     }
   };

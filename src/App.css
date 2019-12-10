@@ -26,6 +26,11 @@
   padding: 0;
 }
 
+.loader-custom {
+  width: 100%;
+  padding-left: 20%;
+}
+
 /* ########################## Landing  #############################*/
 .landing {
   /* background-image: url("image/bird.svg"); */

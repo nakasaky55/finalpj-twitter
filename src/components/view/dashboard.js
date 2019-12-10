@@ -1,11 +1,19 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import { ClipLoader } from "react-spinners";
 import MainContent from "../ultilities/main-content";
+import { Facebook } from 'react-content-loader'
 
 export default function Dashboard(props) {
+  const override = `
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+  `;
+console.log("run dashboard")
   const history = useHistory();
-  if (!props.findToken) {
+  if (!sessionStorage.getItem("token")) {
     history.push("/landing");
   } else {
     console.log(props.user);
@@ -25,14 +33,14 @@ export default function Dashboard(props) {
     const resp = await url.json();
     if (resp.message === "success") {
       sessionStorage.removeItem("token");
-      history.push("/landing");
       props.setUser({ user: "Anonymous" });
+      history.push("/landing");
     } else console.log("fail");
   };
 
   useEffect(() => {
     props.getUser();
-  }, [])
+  }, []);
   return (
     <>
       <style type="text/css">
@@ -40,7 +48,7 @@ export default function Dashboard(props) {
     @media only screen and (max-width: 991px) {
       
       .sidebar_nav_text{
-        display:none
+        display:none;
       }
       .fa-feather {
         display: block
@@ -50,6 +58,7 @@ export default function Dashboard(props) {
         margin-right: 0px;
       }
     }
+
     .dashboard_logo{
       width:47px;
       height: 47px;
@@ -137,7 +146,7 @@ export default function Dashboard(props) {
       <Container fluid="true" className="contains">
         <Row>
           <Col lg={2} md={2} sm={12} className="sb-child sidebar">
-            <nav className="d-flex flex-column justify-content-center align-items-center">
+            <nav className="d-flex flex-column justify-content-center align-items-center custom-nav">
               <div className="sidebar_nav_items">
                 <svg
                   viewBox="0 0 24 24"
@@ -203,11 +212,7 @@ export default function Dashboard(props) {
           </Col>
           <Col lg={8} md={10} sm={12} className="sb-child content">
             Welcome {props.user.user.username}!
-            <MainContent
-              token={props.token}
-              findToken={props.findToken}
-              user={props.user}
-            />
+            <MainContent findToken={props.findToken} user={props.user} loadUser={props.loadUser}/>
           </Col>
           <Col className="sb-child trending d-none d-lg-block">Trending</Col>
         </Row>
