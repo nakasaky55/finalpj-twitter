@@ -10,7 +10,7 @@ export default function Forgot(props) {
       email: event.target.email.value
     };
     const url = await fetch(
-      `${process.env.REACT_APP_PATH}/user/forgot_password`,
+      `${process.env.REACT_APP_PATH}user/forgot_password`,
       {
         method: "POST",
         headers: {
