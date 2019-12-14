@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import moment from "moment";
-import { Image, Row, Col } from "react-bootstrap";
+import { Image, Row, Col, Button, Spinner } from "react-bootstrap";
 
 import PostDetail from "../posts/postDetail";
 
 export default function Profile(props) {
   const param = useParams();
   const [currentUser, setCurrentUser] = useState(null);
+
+  const [followersList, setFollowersList] = useState([]);
+  const [followingList, setFollowingList] = useState([]);
+  const [controlClick, setControlClick] = useState(false);
 
   const getCurrentuser = async () => {
     const url = await fetch(
@@ -24,13 +28,36 @@ export default function Profile(props) {
     const data = await url.json();
     if (data.message == "success") {
       setCurrentUser(data);
+      setFollowersList(data.followers);
     }
   };
+
+  const follow = async () => {
+    setControlClick(true);
+    const url = await fetch(
+      `${process.env.REACT_APP_PATH}/user/follow/${param.id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Token " + sessionStorage.getItem("token")
+        }
+      }
+    );
+    const data = await url.json();
+    if (data.message === "success") {
+      setFollowersList(data.followers)
+      setControlClick(false);
+    }
+  };
+
   useEffect(() => {
     getCurrentuser();
   }, []);
   return currentUser ? (
     <>
+      {/* <h1>{followersList.indexOf(props.userid) == true ? "dance" : "sleep"}</h1> */}
       <Row stle={{ backgroundColor: "blue" }}>
         <Col
           lg={4}
@@ -56,20 +83,37 @@ export default function Profile(props) {
             <div className="d-flex justify-content-start profile-number">
               <p>
                 <span className="font-weight-bold">
-                  {currentUser.following.length}
+                  {currentUser.followings.length}
                 </span>{" "}
                 Following
               </p>
               <p>
                 <span className="font-weight-bold">
                   {" "}
-                  {currentUser.followers.length}{" "}
+                  {followersList.length}{" "}
                 </span>{" "}
                 Followers
               </p>
             </div>
             {param.id != props.userid ? (
-              <button className="btn-follow">Follow</button>
+              controlClick ? (
+                <button className="btn-follow">
+                  <Spinner
+                    // as="span"
+                    animation="grow"
+                    // size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  Loading...
+                </button>
+              ) : followersList.indexOf(props.userid) !== -1 ? (
+                <button className="btn-follow">Following</button>
+              ) : (
+                <button className="btn-follow" onClick={follow}>
+                  Follow
+                </button>
+              )
             ) : (
               <button className="btn-follow">Edit</button>
             )}
