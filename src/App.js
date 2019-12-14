@@ -5,7 +5,6 @@ import Landing from "./components/view/landing";
 import Dashboard from "./components/view/dashboard";
 
 function App(props) {
-  console.log("run app")
   const [user, setUser] = useState({
     user: "Anonymous"
   });
@@ -42,9 +41,9 @@ function App(props) {
   };
   
 
-  useEffect(() => {
-    getUser();
-  }, []);
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
 
   return (
     <Switch>

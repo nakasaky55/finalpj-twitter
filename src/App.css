@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-weight: lighter;
 }
 
 .App-logo {
@@ -103,28 +104,98 @@ ul {
   color: #1da1f2;
 }
 
-
 .hastag-markup {
   color: blue;
-  cursor:pointer;
+  cursor: pointer;
 }
 
-.btn-function{
+.btn-function {
   border: none;
   background-color: white;
 }
 
+.route-wrapper {
+  position: relative;
+}
 
+.route-wrapper > div {
+  position: absolute;
+}
 /* ############################# post detail ######################### */
 .post-detail {
   max-width: 100%;
+  margin-top: 15px;
+  padding: 0 !important;
 }
 
-.post-detail-content{
+.post-detail-content {
   width: 100%;
 }
 
 .image-post-detail {
   max-height: 40px;
-  margin-right:10px;
+  margin-right: 10px;
+}
+
+.comment-section {
+  border: 1px solid silver;
+}
+
+#comment-markup {
+  height: 50px;
+}
+
+.postdetail-head {
+  cursor: pointer;
+}
+
+.currentpost-comment-section {
+  border: 1px solid rgba(184, 184, 184, 0.58);
+  margin-top: 12px;
+}
+
+.btn-custom {
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  color: white;
+}
+.fa-chevron-down {
+  color: #1da1f2;
+}
+
+.fa-trash-alt {
+  color: red;
+}
+
+.btn-custom:focus {
+  background-color: red;
+  border: none;
+}
+
+.btn-follow {
+  min-width: 130px;
+  padding: 10px 0;
+  border: none;
+  border-radius: 25px;
+  background-color: #1da1f2;
+  color: white;
+}
+
+.profile-number p {
+  /* min-height: 50px; */
+  background-color: red;
+  width: calc(100% / 4);
+  font-weight: 100;
+  text-align: center;
+}
+.profile-detail {
+  height: 80%;
+}
+.profile-username {
+  height: 20%;
+  margin: 0;
 }

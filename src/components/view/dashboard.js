@@ -1,22 +1,47 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Switch, Route, Link } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { ClipLoader } from "react-spinners";
 import MainContent from "../ultilities/main-content";
-import { Facebook } from 'react-content-loader'
+import CurrentPost from "../ultilities/posts/currentPost";
+import { Facebook } from "react-content-loader";
+import { CSSTransition } from "react-transition-group";
+import Profile from "../ultilities/profile/profile";
 
 export default function Dashboard(props) {
+  function mapStyles(styles) {
+    return {
+      opacity: styles.opacity,
+      transform: `scale(${styles.scale})`
+    };
+  }
+
+  // wrap the `spring` helper to use a bouncy config
+  const bounceTransition = {
+    // start in a transparent, upscaled state
+    atEnter: {
+      opacity: 0
+    },
+    // leave in a transparent, downscaled state
+    atLeave: {
+      opacity: 0
+    },
+    // and rest at an opaque, normally-scaled state
+    atActive: {
+      opacity: 1
+    }
+  };
+
   const override = `
     display: block;
     margin: 0 auto;
     border-color: red;
   `;
-console.log("run dashboard")
   const history = useHistory();
   if (!sessionStorage.getItem("token")) {
     history.push("/landing");
   } else {
-    console.log(props.user);
+    // console.log(props.user);
   }
 
   const doLogout = async () => {
@@ -84,7 +109,8 @@ console.log("run dashboard")
       height: 100vh;
       position:sticky;
       top:0;
-      padding-top: 10px
+      padding-top: 10px;
+      border-right: 3px solid #0000003b
     }
     .sidebar_nav_text {
       min-width:50%;
@@ -162,15 +188,17 @@ console.log("run dashboard")
               </div>
               <a href="#" className="sidebar_nav_items">
                 <div className="sidebar_nav_icon">
-                  <i class="far fa-newspaper"></i>
+                  <i className="far fa-newspaper"></i>
                 </div>
                 <div className="sidebar_nav_text">
-                  <span>Dashboard</span>
+                  <Link to="/">
+                    <span>Dashboard</span>
+                  </Link>
                 </div>
               </a>
               <a href="#" className="sidebar_nav_items">
                 <div className="sidebar_nav_icon">
-                  <i class="fab fa-slack-hash"></i>
+                  <i className="fab fa-slack-hash"></i>
                 </div>
                 <div className="sidebar_nav_text">
                   <span>Trending</span>
@@ -178,7 +206,7 @@ console.log("run dashboard")
               </a>
               <a href="#" className="sidebar_nav_items">
                 <div className="sidebar_nav_icon">
-                  <i class="far fa-bell"></i>
+                  <i className="far fa-bell"></i>
                 </div>
                 <div className="sidebar_nav_text">
                   <span>Notifications</span>
@@ -186,11 +214,13 @@ console.log("run dashboard")
               </a>
               <a href="#" className="sidebar_nav_items">
                 <div className="sidebar_nav_icon">
-                  <i class="far fa-user-circle"></i>
+                  <i className="far fa-user-circle"></i>
                 </div>
-                <div className="sidebar_nav_text">
-                  <span>Profile</span>
-                </div>
+                <Link to={`/user/${props.user.user.id}`}>
+                  <div className="sidebar_nav_text">
+                    <span>Profile</span>
+                  </div>
+                </Link>
               </a>
 
               <div className="sidebar_nav_items">
@@ -204,15 +234,36 @@ console.log("run dashboard")
                   className="btn-custom logout-btn "
                   onClick={() => doLogout()}
                 >
-                  <i class="fas fa-sign-out-alt"></i>
+                  <i className="fas fa-sign-out-alt"></i>
                   <span className="sidebar_nav_text">Logout</span>
                 </Button>
               </div>
             </nav>
           </Col>
-          <Col lg={8} md={10} sm={12} className="sb-child content">
+          <Col lg={7} md={10} sm={12} className="sb-child content">
             Welcome {props.user.user.username}!
-            <MainContent findToken={props.findToken} user={props.user} loadUser={props.loadUser}/>
+            <Switch>
+              <Route
+                exact
+                path="/post/:id"
+                render={() => <CurrentPost user={props.user} />}
+              />
+              <Route
+                exact
+                path="/user/:id"
+                render={() => <Profile userid={props.user.user.id} />}
+              />
+              <Route
+                path="/"
+                render={() => (
+                  <MainContent
+                    findToken={props.findToken}
+                    user={props.user}
+                    loadUser={props.loadUser}
+                  />
+                )}
+              />
+            </Switch>
           </Col>
           <Col className="sb-child trending d-none d-lg-block">Trending</Col>
         </Row>

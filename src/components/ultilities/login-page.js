@@ -6,7 +6,6 @@ export default function Login(props) {
   // console.log("login prop", props)
   const history = useHistory();
   const goDashboard = () => {
-    console.log("run dashboard")
     history.push("/");
   };
 

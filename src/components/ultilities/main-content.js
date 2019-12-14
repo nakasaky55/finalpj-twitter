@@ -17,7 +17,7 @@ export default function MainConent(props) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  console.log(props);
   //get input to create post when user submit
   const [input, setInput] = useState("");
 
@@ -27,6 +27,10 @@ export default function MainConent(props) {
   //posts to display on main content
   const [posts, setPosts] = useState([]);
 
+  //infor get from a post
+  const [postDetail, setPostDetail] = useState(null);
+
+  //create a new post
   const handleSubmit = async event => {
     setControlPosting(true);
     event.preventDefault();
@@ -36,7 +40,6 @@ export default function MainConent(props) {
       content: input.trim(),
       hastags: tempHastag
     };
-    console.log("run create post");
     const resp = await fetch(`${process.env.REACT_APP_PATH}/posts/create`, {
       method: "POST",
       headers: {
@@ -56,7 +59,33 @@ export default function MainConent(props) {
     }
   };
 
+  //create a comment:
+  const createComment = async (e, id) => {
+    e.preventDefault();
+    const inputData = {
+      content: input.trim()
+    };
+    const resp = await fetch(
+      `${process.env.REACT_APP_PATH}/posts/${id}/create_comment`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Token " + sessionStorage.getItem("token")
+        },
+        body: JSON.stringify(inputData)
+      }
+    );
+    const data = await resp.json();
+    if (data.message == "created") {
+      handleClose();
+    }
+  };
+
+  //get all posts from api
   const getPosts = async () => {
+    console.log("run get Post");
     const resp = await fetch(`${process.env.REACT_APP_PATH}/posts/get_posts`, {
       method: "GET",
       headers: {
@@ -67,6 +96,7 @@ export default function MainConent(props) {
     });
     const data = await resp.json();
     setPosts(data.data_received);
+    setControlPosting(false)
   };
 
   //Control cursor pointer
@@ -89,21 +119,18 @@ export default function MainConent(props) {
     }
   }
 
-  const getPost = async () => {
-    const resp = await fetch("https://127.0.0.1:5000/posts/get_posts", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Token " + sessionStorage.getItem("token")
-      }
-    });
-    const data = await resp.json();
-  };
-
+  //Get post when token is existed in local storage
   useEffect(() => {
     getPosts();
   }, [sessionStorage.getItem("token")]);
+
+  //reset info get from a post when close model
+  useEffect(() => {
+    if (show == false) {
+      setPostDetail(null);
+      setInput("");
+    } else console.log("stay");
+  }, [show]);
 
   return (
     <>
@@ -216,10 +243,14 @@ export default function MainConent(props) {
             posts.map(post => {
               return (
                 <PostDetail
+                  key={post.id}
                   post={post}
                   token={sessionStorage.getItem("token")}
                   user={props.user}
+                  userid={props.user.user.id}
                   handleShow={handleShow}
+                  setPostDetail={setPostDetail}
+                  getPosts={getPosts}
                 />
               );
             })
@@ -230,13 +261,52 @@ export default function MainConent(props) {
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+          <p>{postDetail}</p>
+          <Form
+            // className="d-flex flex-column"
+            className="comment-section"
+            onSubmit={e => handleSubmit(e)}
+          >
+            <div
+              rows={5}
+              name="content"
+              id="comment-markup"
+              onKeyUp={e => {
+                const inputMarkup = document.getElementById("comment-markup")
+                  .innerText;
+                setInput(inputMarkup);
+                if (input !== inputMarkup) {
+                  if (inputMarkup && inputMarkup.length > 0) {
+                    let tempString = inputMarkup.split(" ").filter(Boolean);
+                    const htmlString = tempString.map(item => {
+                      if (item.charAt(0) === "#") {
+                        item = `<span class="hastag-markup">${item}</span>`;
+                        return item;
+                      }
+                      return item;
+                    });
+
+                    document.getElementById(
+                      "comment-markup"
+                    ).innerHTML = htmlString.join(" ");
+                  }
+                }
+                setEndOfContenteditable(e.target);
+              }}
+              suppressContentEditableWarning={true}
+              contentEditable
+            >
+              {" "}
+            </div>
+          </Form>
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
+          <Button
+            variant="success"
+            onClick={event => createComment(event, postDetail)}
+          >
+            Comment
           </Button>
         </Modal.Footer>
       </Modal>
