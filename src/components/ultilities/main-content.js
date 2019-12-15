@@ -11,13 +11,14 @@ import {
 } from "react-bootstrap";
 import PostDetail from "./posts/postDetail";
 import { List } from "react-content-loader";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function MainConent(props) {
   //control modal comment show/hide
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  console.log(props);
+
   //get input to create post when user submit
   const [input, setInput] = useState("");
 
@@ -26,9 +27,14 @@ export default function MainConent(props) {
 
   //posts to display on main content
   const [posts, setPosts] = useState([]);
-
+  console.log(posts);
   //infor get from a post
   const [postDetail, setPostDetail] = useState(null);
+
+  //start page
+  const [page, setPage] = useState(1);
+
+  const [hasMore, setHasMore] = useState(false);
 
   //create a new post
   const handleSubmit = async event => {
@@ -52,10 +58,14 @@ export default function MainConent(props) {
     const data = await resp.json();
 
     setControlPosting(false);
-    setInput("");
+
+    if (data.message == "created") {
+      setPosts([]);
+      getPosts(1);
+    }
     document.getElementById("input-markup").innerHTML = "";
     if (!controlPosting) {
-      getPosts();
+      setInput("");
     }
   };
 
@@ -84,19 +94,29 @@ export default function MainConent(props) {
   };
 
   //get all posts from api
-  const getPosts = async () => {
-    console.log("run get Post");
-    const resp = await fetch(`${process.env.REACT_APP_PATH}/posts/get_posts`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Token " + sessionStorage.getItem("token")
+  const getPosts = async arg => {
+    const resp = await fetch(
+      `${process.env.REACT_APP_PATH}/posts/get_posts/post&page=${arg}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Token " + sessionStorage.getItem("token")
+        }
       }
-    });
+    );
     const data = await resp.json();
-    setPosts(data.data_received);
-    setControlPosting(false)
+    if (data.has_next == true) {
+      setPage(data.page);
+      setHasMore(true);
+    } else {
+      setHasMore(false);
+    }
+    if (arg == 1) {
+      setPosts(data.data_received);
+    } else setPosts(posts.concat(data.data_received));
+    setControlPosting(false);
   };
 
   //Control cursor pointer
@@ -121,7 +141,7 @@ export default function MainConent(props) {
 
   //Get post when token is existed in local storage
   useEffect(() => {
-    getPosts();
+    getPosts(1);
   }, [sessionStorage.getItem("token")]);
 
   //reset info get from a post when close model
@@ -183,7 +203,9 @@ export default function MainConent(props) {
           </div>
           <Form
             className="maincontent_input d-flex flex-column"
-            onSubmit={e => handleSubmit(e)}
+            onSubmit={e => {
+              handleSubmit(e);
+            }}
           >
             <div
               rows={5}
@@ -240,20 +262,27 @@ export default function MainConent(props) {
               <List className="loader-custom" />
             </Row>
           ) : (
-            posts.map(post => {
-              return (
-                <PostDetail
-                  key={post.id}
-                  post={post}
-                  token={sessionStorage.getItem("token")}
-                  user={props.user}
-                  userid={props.user.user.id}
-                  handleShow={handleShow}
-                  setPostDetail={setPostDetail}
-                  getPosts={getPosts}
-                />
-              );
-            })
+            <InfiniteScroll
+              dataLength={posts.length}
+              next={() => getPosts(page)}
+              hasMore={hasMore}
+              loader={<List className="loader-custom" />}
+            >
+              {posts.map(post => {
+                return (
+                  <PostDetail
+                    key={post.id}
+                    post={post}
+                    token={sessionStorage.getItem("token")}
+                    user={props.user}
+                    userid={props.user.user.id}
+                    handleShow={handleShow}
+                    setPostDetail={setPostDetail}
+                    getPosts={getPosts}
+                  />
+                );
+              })}
+            </InfiniteScroll>
           )}
         </Container>
       </Row>

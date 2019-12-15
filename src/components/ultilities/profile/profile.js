@@ -52,6 +52,26 @@ export default function Profile(props) {
     }
   };
 
+  const unfollow = async () => {
+    setControlClick(true);
+    const url = await fetch(
+      `${process.env.REACT_APP_PATH}/user/unfollow/${param.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Token " + sessionStorage.getItem("token")
+        }
+      }
+    );
+    const data = await url.json();
+    if (data.message === "success") {
+      setFollowersList(data.followers)
+      setControlClick(false);
+    }
+  };
+
   useEffect(() => {
     getCurrentuser();
   }, []);
@@ -108,7 +128,7 @@ export default function Profile(props) {
                   Loading...
                 </button>
               ) : followersList.indexOf(props.userid) !== -1 ? (
-                <button className="btn-follow">Following</button>
+                <button className="btn-follow" onClick={unfollow}>Following</button>
               ) : (
                 <button className="btn-follow" onClick={follow}>
                   Follow

@@ -95,7 +95,7 @@ console.log(props)
     );
     const data = await url.json();
     if (data.message == "success") {
-      props.getPosts();
+      props.getPosts(1);
     }
   };
 

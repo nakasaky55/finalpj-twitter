@@ -148,7 +148,7 @@ export default function Dashboard(props) {
     
     .content {
       background-color: white;
-      min-height: 100vh;
+      min-height: 110vh;
     }
     .trending {
       background-color: orange;
