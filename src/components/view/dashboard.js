@@ -7,6 +7,7 @@ import CurrentPost from "../ultilities/posts/currentPost";
 import { Facebook } from "react-content-loader";
 import { CSSTransition } from "react-transition-group";
 import Profile from "../ultilities/profile/profile";
+import Trending from "../ultilities/trending";
 
 export default function Dashboard(props) {
   function mapStyles(styles) {
@@ -90,7 +91,7 @@ export default function Dashboard(props) {
     }
 
     .contains {
-      background-color: black;
+      // background-color: black;
       padding:0;
     }
     .contains > .row {
@@ -151,7 +152,6 @@ export default function Dashboard(props) {
       min-height: 110vh;
     }
     .trending {
-      background-color: orange;
       height: 100vh;
       position:sticky;
       top:0
@@ -265,7 +265,10 @@ export default function Dashboard(props) {
               />
             </Switch>
           </Col>
-          <Col className="sb-child trending d-none d-lg-block">Trending</Col>
+          <Col className="sb-child trending d-none d-lg-block">
+            <h1>Trending</h1>
+            <Trending />
+          </Col>
         </Row>
       </Container>
     </>

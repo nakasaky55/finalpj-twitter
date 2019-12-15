@@ -27,7 +27,7 @@ export default function MainConent(props) {
 
   //posts to display on main content
   const [posts, setPosts] = useState([]);
-  console.log(posts);
+
   //infor get from a post
   const [postDetail, setPostDetail] = useState(null);
 

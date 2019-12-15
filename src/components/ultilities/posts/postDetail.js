@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 
 export default function PostDetail(props) {
   const history = useHistory();
-console.log(props)
+
   const [likeState, setLikeState] = useState(true);
   const [progress, setProgress] = useState(false);
   const [likeNumb, setLikeNumb] = useState(props.post.likes.length);

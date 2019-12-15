@@ -199,3 +199,25 @@ ul {
   height: 20%;
   margin: 0;
 }
+
+/* trending */
+.trending-board {
+  /* border: 1px solid black; */
+  padding-left:10px;
+  border-radius: 16px;
+  background-color: #f5f8fa;
+}
+
+.trending-input {
+  border-radius: 25px !important;
+  margin-bottom: 10px;
+}
+
+#trending-border{
+  border-top:1px solid #0c888838;
+  border-bottom:1px solid #0c888838;
+}
+
+.trending-detail {
+  line-height: 25px;
+}

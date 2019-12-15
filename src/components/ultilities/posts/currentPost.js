@@ -14,7 +14,7 @@ export default function CurrentPost(props) {
   //loading when click like
   const [progress, setProgress] = useState(false);
   const [commentsNumb, setCommentsNumb] = useState(0);
-console.log("currpost", props)
+
   //control modal comment show/hide
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -111,7 +111,7 @@ console.log("currpost", props)
       }
     );
     const data = await resp.json();
-    console.log(data);
+
     if (data.state) {
       setCurrPost(data);
       setCurrPostComment(data.comments);
