@@ -126,7 +126,6 @@ export default function Profile(props) {
     if (resp.response == "success") {
       SetLoadingUpload(false);
       setAvaUrl(resp.data);
-      e.target.files = []
     }
   };
 
@@ -196,7 +195,7 @@ export default function Profile(props) {
                 <Card>
                   <Card.Header>
                     <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                      Click me!
+                      Edit profile picture
                     </Accordion.Toggle>
                   </Card.Header>
                   <Accordion.Collapse eventKey="0">

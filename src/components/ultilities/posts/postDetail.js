@@ -18,7 +18,6 @@ export default function PostDetail(props) {
   const [progress, setProgress] = useState(false);
   const [likeNumb, setLikeNumb] = useState(props.post.likes.length);
   const [commentsNumb, setCommentsNumb] = useState(props.post.comments.length);
-  console.log(props);
   const checkLike = () => {
     if (!props.post.like_state) {
       setLikeState(true);

@@ -15,7 +15,7 @@ export default function TagClick() {
 
   //infor get from a post
   const [postDetail, setPostDetail] = useState(null);
-
+console.log(data)
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -115,6 +115,7 @@ export default function TagClick() {
               post={item}
               handleShow={handleShow}
               setPostDetail={setPostDetail}
+              avaUrl={item.ava_url}
             />
           );
         })}

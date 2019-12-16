@@ -10,7 +10,7 @@ export default function Explore() {
   const [hasMore, setHasMore] = useState(false);
   const [data, setData] = useState([]);
   const [input, setInput] = useState("");
-
+console.log("xx", data)
   //infor get from a post
   const [postDetail, setPostDetail] = useState(null);
 
@@ -36,8 +36,8 @@ export default function Explore() {
     }
     if (data_received.has_next) {
       setPage(data_received.page);
-      setHasMore(true)
-    }else setHasMore(false)
+      setHasMore(true);
+    } else setHasMore(false);
   };
 
   //create comment
@@ -85,7 +85,7 @@ export default function Explore() {
   }
 
   useEffect(() => {
-    document.title="Explore"
+    document.title = "Explore";
     getExplore();
   }, []);
   return (
@@ -102,6 +102,7 @@ export default function Explore() {
               post={item}
               handleShow={handleShow}
               setPostDetail={setPostDetail}
+              avaUrl={item.ava_url}
             />
           );
         })}

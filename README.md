@@ -1,8 +1,6 @@
-# Project Brief: `Clone Twitter`
+# Project Brief: `Tier Ten Twitter`
 
-*Here, describe your project as concisely as possible, ideally in two sentences. One sentence to describe the idea, and one sentence to explain why it's remarkable.*
-
-SilverDates is a mobile-friendly dating site for people aged 55+. Most sites today are designed for younger people, and have too many features for old people to use.
+TierTenTwitter is a ultra rip version of Twitter, that's all. Tier 1 is the coolest thing with high DPS, defense, magic attack, and mine is 10. Btw, it's still working in some aspects.
 
 
 ### Key Features and Technical Implementation Plan
@@ -15,13 +13,13 @@ SilverDates is a mobile-friendly dating site for people aged 55+. Most sites tod
 
 * The users will be able to create post.
     * User can share, edit or delete their posts.
-    * Other users can react, share or comment to other users's post. 
+    * Other users can react, share or comment to other users's post. ( share is broken )
 
 * Mobile Friendly. 
     
 
 * Filtering / Searching
-    * React + API hooks for filtering/searching a list of people to date. 
+    * User can explore the newest tweet based on hastag
 
 
 ### Landing Page
