@@ -118,10 +118,10 @@ export default function PostDetail(props) {
               cloudName="hslqp9lo2"
               publicId={props.avaUrl ? props.avaUrl : ""}
               responsive
-              style={{ maxWidth: "50px", margin: "0 10px" }}
+              style={{ maxWidth: "60px", margin: "0 10px" }}
             >
               <Transformation gravity="face" radius="max" crop="thumb" />
-              <Transformation angle="30" />
+              <Transformation angle="15" />
               <Transformation effect="trim" />
             </ImageCloud>
           </div>

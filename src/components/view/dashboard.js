@@ -68,6 +68,7 @@ export default function Dashboard(props) {
 
   useEffect(() => {
     props.getUser();
+    document.title = "Dashboard"
   }, []);
   return (
     <>

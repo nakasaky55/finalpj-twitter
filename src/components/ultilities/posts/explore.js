@@ -85,6 +85,7 @@ export default function Explore() {
   }
 
   useEffect(() => {
+    document.title="Explore"
     getExplore();
   }, []);
   return (

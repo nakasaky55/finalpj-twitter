@@ -142,6 +142,7 @@ export default function MainConent(props) {
   //Get post when token is existed in local storage
   useEffect(() => {
     getPosts(1);
+    document.title = "Dashboard";
   }, [sessionStorage.getItem("token")]);
 
   //reset info get from a post when close model

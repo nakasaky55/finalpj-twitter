@@ -38,6 +38,7 @@ export default function Trending() {
 
   useEffect(() => {
     getTrending();
+    document.title = "Trending";
   }, []);
 
   return (

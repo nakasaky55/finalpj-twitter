@@ -187,10 +187,12 @@ ul {
 
 .profile-number p {
   /* min-height: 50px; */
-  background-color: red;
+  background-color: #1da1f2;
   width: calc(100% / 4);
   font-weight: 100;
   text-align: center;
+  color:white;
+  height: 30px;
 }
 .profile-detail {
   height: 80%;

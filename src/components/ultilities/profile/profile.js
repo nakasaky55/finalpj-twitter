@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import moment from "moment";
-import { Row, Col, Button, Spinner } from "react-bootstrap";
+import { Row, Col, Button, Spinner, Accordion, Card } from "react-bootstrap";
 import {
   Image,
   Video,
@@ -22,6 +22,8 @@ export default function Profile(props) {
   const [followersList, setFollowersList] = useState([]);
   const [followingList, setFollowingList] = useState([]);
   const [controlClick, setControlClick] = useState(false);
+
+  const [loadingUpload, SetLoadingUpload] = useState(false);
 
   const getCurrentuser = async () => {
     const url = await fetch(
@@ -105,26 +107,32 @@ export default function Profile(props) {
 
   const editInfor = async e => {
     e.preventDefault();
-
-    const url = await fetch(`${process.env.REACT_APP_PATH}/user/${currentUser.user_id}/upload_ava`, {
-      method: "POST",
-      body: JSON.stringify({
-        file: fileEncoded
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        // Accept: "application/json",
-        Authorization: "Token " + sessionStorage.getItem("token")
+    SetLoadingUpload(true);
+    const url = await fetch(
+      `${process.env.REACT_APP_PATH}/user/${currentUser.user_id}/upload_ava`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          file: fileEncoded
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          // Accept: "application/json",
+          Authorization: "Token " + sessionStorage.getItem("token")
+        }
       }
-    });
+    );
     const resp = await url.json();
     if (resp.response == "success") {
+      SetLoadingUpload(false);
       setAvaUrl(resp.data);
+      e.target.files = []
     }
   };
 
   useEffect(() => {
     getCurrentuser();
+    document.title = "Profile";
   }, []);
   return currentUser ? (
     <>
@@ -159,18 +167,10 @@ export default function Profile(props) {
         </Col>
         <Col className="profile-right">
           <h1 className="profile-username">
-            {currentUser.username} {avaUrl}
+            {currentUser.username}{" "}
+            {!loadingUpload ? "" : <Spinner animation="grow" />}
           </h1>
-          <form onSubmit={e => editInfor(e)}>
-            <input
-              type="file"
-              name="avatar"
-              onChange={e => {
-                encoded(e.target.files[0]);
-              }}
-            ></input>
-            <button type="submit">Submit</button>
-          </form>
+
           <div className="profile-detail">
             <p className="font-weight-light">
               <i class="far fa-calendar-alt"></i> Joined at{" "}
@@ -191,6 +191,33 @@ export default function Profile(props) {
                 Followers
               </p>
             </div>
+            {currentUser.user_id == props.userid ? (
+              <Accordion>
+                <Card>
+                  <Card.Header>
+                    <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                      Click me!
+                    </Accordion.Toggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="0">
+                    <form onSubmit={e => editInfor(e)}>
+                      <input
+                        type="file"
+                        name="avatar"
+                        onChange={e => {
+                          encoded(e.target.files[0]);
+                        }}
+                      ></input>
+                      <button className="btn-follow" type="submit">
+                        Submit
+                      </button>
+                    </form>
+                  </Accordion.Collapse>
+                </Card>
+              </Accordion>
+            ) : (
+              ""
+            )}
             {param.id != props.userid ? (
               controlClick ? (
                 <button className="btn-follow">
@@ -213,7 +240,8 @@ export default function Profile(props) {
                 </button>
               )
             ) : (
-              <button className="btn-follow">Edit</button>
+              // <button className="btn-follow">Edit</button>
+              ""
             )}
           </div>
         </Col>
@@ -221,7 +249,13 @@ export default function Profile(props) {
       <Row>
         {currentUser &&
           currentUser.posts.map(post => {
-            return <PostDetail post={post} getCurrentuser={getCurrentuser} avaUrl={currentUser.ava_url}/>;
+            return (
+              <PostDetail
+                post={post}
+                getCurrentuser={getCurrentuser}
+                avaUrl={avaUrl}
+              />
+            );
           })}
       </Row>
       <div id="dummy" style={{ display: "none" }}></div>
