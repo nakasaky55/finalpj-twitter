@@ -247,6 +247,7 @@ export default function CurrentPost(props) {
             cloudName="hslqp9lo2"
             publicId={currPost.content_img ? currPost.content_img : ""}
             responsive
+            style={{maxWidth:"100%"}}
           >
             
           </ImageCloud>

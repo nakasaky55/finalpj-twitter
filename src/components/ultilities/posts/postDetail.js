@@ -176,11 +176,12 @@ export default function PostDetail(props) {
           </div>
         </div>
       </div>
-      <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-center" style={{maxWidth:"100%"}}>
         <ImageCloud
           cloudName="hslqp9lo2"
           publicId={props.content_img ? props.content_img : ""}
           responsive
+          style={{maxWidth:"100%"}}
         ></ImageCloud>
       </div>
       <div className="d-flex justify-content-around">

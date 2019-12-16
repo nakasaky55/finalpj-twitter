@@ -71,6 +71,7 @@ export default function MainConent(props) {
     document.getElementById("input-markup").innerHTML = "";
     if (!controlPosting) {
       setInput("");
+      document.getElementById('inputFile').value =""
     }
   };
 
@@ -274,6 +275,7 @@ export default function MainConent(props) {
                 <input
                   type="file"
                   name="avatar"
+                  id="inputFile"
                   onChange={e => {
                     encoded(e.target.files[0]);
                   }}
