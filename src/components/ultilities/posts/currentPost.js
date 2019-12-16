@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import moment from "moment";
 import { Facebook } from "react-content-loader";
 
+import { Image as ImageCloud, Transformation } from "cloudinary-react";
 import Comment from "../posts/comment";
 
 export default function CurrentPost(props) {
@@ -165,8 +166,8 @@ export default function CurrentPost(props) {
   }
 
   const deleteThisPost = async () => {
-    console.log("go")
-  }
+    console.log("go");
+  };
 
   useEffect(() => {
     getCurrentPost();
@@ -184,11 +185,14 @@ export default function CurrentPost(props) {
       >
         <div className="d-flex justify-content-start postdetail-head">
           <div>
-            <Image
-              className="image-post-detail"
-              src="https://www.premierchoicegroup.com/wp-content/uploads/place-holder-avatar.jpg"
-              roundedCircle
-            />
+            <ImageCloud
+              cloudName="hslqp9lo2"
+              publicId={props.user.user.ava_url ? props.user.user.ava_url : ""}
+              responsive
+              style={{ maxWidth: "50px", margin:"0 10px" }}
+            >
+              <Transformation gravity="face" radius="max" crop="scale" />
+            </ImageCloud>
           </div>
           <div className="post-detail-content">
             <b>{currPost.author}</b>

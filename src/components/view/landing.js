@@ -44,7 +44,7 @@ export default function Landing(props) {
   return (
     <>
       <Container className="landing" fluid="true">
-        <h1>{process.env.REACT_APP_PATH}</h1>
+        {/* <h1>{process.env.REACT_APP_PATH}</h1> */}
         <Row>
           <Col
             className="left-landing d-flex justify-content-center align-items-center"

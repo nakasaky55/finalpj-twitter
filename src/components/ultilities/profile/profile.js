@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import moment from "moment";
-import { Image, Row, Col, Button, Spinner } from "react-bootstrap";
+import { Row, Col, Button, Spinner } from "react-bootstrap";
+import {
+  Image,
+  Video,
+  Transformation,
+  CloudinaryContext
+} from "cloudinary-react";
 
 import PostDetail from "../posts/postDetail";
-import {Facebook} from "react-content-loader"
+import { Facebook } from "react-content-loader";
 
 export default function Profile(props) {
   const param = useParams();
   const [currentUser, setCurrentUser] = useState(null);
+  const [avaUrl, setAvaUrl] = useState("download_qc5n9t");
+  const [fileName, setFileName] = useState("");
+  const [fileEncoded, setFileEncoded] = useState("");
 
   const [followersList, setFollowersList] = useState([]);
   const [followingList, setFollowingList] = useState([]);
@@ -29,6 +38,7 @@ export default function Profile(props) {
     const data = await url.json();
     if (data.message == "success") {
       setCurrentUser(data);
+      data.ava_url && setAvaUrl(data.ava_url);
       setFollowersList(data.followers);
     }
   };
@@ -48,7 +58,7 @@ export default function Profile(props) {
     );
     const data = await url.json();
     if (data.message === "success") {
-      setFollowersList(data.followers)
+      setFollowersList(data.followers);
       setControlClick(false);
     }
   };
@@ -68,8 +78,48 @@ export default function Profile(props) {
     );
     const data = await url.json();
     if (data.message === "success") {
-      setFollowersList(data.followers)
+      setFollowersList(data.followers);
       setControlClick(false);
+    }
+  };
+
+  const encoded = file => {
+    const conv = new FileReader();
+    conv.onload = fileLoadedEvent => {
+      var srcData = fileLoadedEvent.target.result;
+      var newImage = document.createElement("img");
+      newImage.src = srcData;
+      document.getElementById("dummy").innerHTML = newImage.outerHTML;
+      console.log(
+        document.getElementById("dummy").getElementsByTagName("img")[0].src
+      );
+      // document.getElementById("txt").value = document.getElementById(
+      //   "dummy"
+      // ).innerHTML;
+      return setFileEncoded(
+        document.getElementById("dummy").getElementsByTagName("img")[0].src
+      );
+    };
+    conv.readAsDataURL(file);
+  };
+
+  const editInfor = async e => {
+    e.preventDefault();
+
+    const url = await fetch(`${process.env.REACT_APP_PATH}/user/${currentUser.user_id}/upload_ava`, {
+      method: "POST",
+      body: JSON.stringify({
+        file: fileEncoded
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        // Accept: "application/json",
+        Authorization: "Token " + sessionStorage.getItem("token")
+      }
+    });
+    const resp = await url.json();
+    if (resp.response == "success") {
+      setAvaUrl(resp.data);
     }
   };
 
@@ -84,18 +134,43 @@ export default function Profile(props) {
           lg={4}
           md={3}
           sm={12}
-          style={{ backgroundColor: "red" }}
+          style={{
+            backgroundColor: "red",
+            maxWidth: "100%",
+            maxHeight: "100%"
+          }}
           className="d-flex justify-content-center"
         >
-          <Image
+          {/* <Image
             // className="image-post-detail"
             style={{ width: "100%" }}
             src="https://www.premierchoicegroup.com/wp-content/uploads/place-holder-avatar.jpg"
             roundedCircle
-          />
+          /> */}
+
+          <Image
+            cloudName="hslqp9lo2"
+            publicId={avaUrl}
+            responsive
+            style={{ width: "100%" }}
+          >
+            <Transformation gravity="face" crop="scale" />
+          </Image>
         </Col>
         <Col className="profile-right">
-          <h1 className="profile-username">{currentUser.username}</h1>
+          <h1 className="profile-username">
+            {currentUser.username} {avaUrl}
+          </h1>
+          <form onSubmit={e => editInfor(e)}>
+            <input
+              type="file"
+              name="avatar"
+              onChange={e => {
+                encoded(e.target.files[0]);
+              }}
+            ></input>
+            <button type="submit">Submit</button>
+          </form>
           <div className="profile-detail">
             <p className="font-weight-light">
               <i class="far fa-calendar-alt"></i> Joined at{" "}
@@ -129,7 +204,9 @@ export default function Profile(props) {
                   Loading...
                 </button>
               ) : followersList.indexOf(props.userid) !== -1 ? (
-                <button className="btn-follow" onClick={unfollow}>Following</button>
+                <button className="btn-follow" onClick={unfollow}>
+                  Following
+                </button>
               ) : (
                 <button className="btn-follow" onClick={follow}>
                   Follow
@@ -144,9 +221,11 @@ export default function Profile(props) {
       <Row>
         {currentUser &&
           currentUser.posts.map(post => {
-            return <PostDetail post={post} getCurrentuser={getCurrentuser} />;
+            return <PostDetail post={post} getCurrentuser={getCurrentuser} avaUrl={currentUser.ava_url}/>;
           })}
       </Row>
+      <div id="dummy" style={{ display: "none" }}></div>
+      <div id="txt" style={{ display: "none" }}></div>
     </>
   ) : (
     <Facebook />

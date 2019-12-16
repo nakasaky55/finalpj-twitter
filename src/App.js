@@ -34,7 +34,8 @@ function App(props) {
       user: {
         username: resp.username,
         email: resp.email,
-        id: resp.id
+        id: resp.id,
+        ava_url: resp.ava_url
       }
     });
     setLoadUser(false)

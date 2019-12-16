@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
+import { Image as ImageCloud, Transformation } from "cloudinary-react";
 
 export default function PostDetail(props) {
   const history = useHistory();
@@ -32,7 +33,7 @@ export default function PostDetail(props) {
     const contentFormatted = content
       .map(word => {
         if (word.charAt(0) === "#") {
-          return `<a href="/trending/${word.replace("#","")}">${word}</a>`;
+          return `<a href="/trending/${word.replace("#", "")}">${word}</a>`;
         }
         return word;
       })
@@ -113,11 +114,16 @@ export default function PostDetail(props) {
       >
         <div className="d-flex">
           <div>
-            <Image
-              className="image-post-detail"
-              src="https://www.premierchoicegroup.com/wp-content/uploads/place-holder-avatar.jpg"
-              roundedCircle
-            />
+            <ImageCloud
+              cloudName="hslqp9lo2"
+              publicId={props.avaUrl ? props.avaUrl : ""}
+              responsive
+              style={{ maxWidth: "50px", margin: "0 10px" }}
+            >
+              <Transformation gravity="face" radius="max" crop="thumb" />
+              <Transformation angle="30" />
+              <Transformation effect="trim" />
+            </ImageCloud>
           </div>
           <div className="post-detail-content">
             <b

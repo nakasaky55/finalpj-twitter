@@ -276,6 +276,7 @@ export default function MainConent(props) {
                     token={sessionStorage.getItem("token")}
                     user={props.user}
                     userid={props.user.user.id}
+                    avaUrl={post.ava_url}
                     handleShow={handleShow}
                     setPostDetail={setPostDetail}
                     getPosts={getPosts}
