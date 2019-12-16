@@ -143,7 +143,7 @@ export default function Profile(props) {
       <Row>
         {currentUser &&
           currentUser.posts.map(post => {
-            return <PostDetail post={post} />;
+            return <PostDetail post={post} getCurrentuser={getCurrentuser} />;
           })}
       </Row>
     </>

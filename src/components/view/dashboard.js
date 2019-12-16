@@ -8,6 +8,7 @@ import { Facebook } from "react-content-loader";
 import { CSSTransition } from "react-transition-group";
 import Profile from "../ultilities/profile/profile";
 import Trending from "../ultilities/trending";
+import Explore from "../ultilities/posts/explore";
 
 export default function Dashboard(props) {
   function mapStyles(styles) {
@@ -201,7 +202,9 @@ export default function Dashboard(props) {
                   <i className="fab fa-slack-hash"></i>
                 </div>
                 <div className="sidebar_nav_text">
-                  <span>Trending</span>
+                  <Link to="/explore">
+                    <span>Explore</span>
+                  </Link>
                 </div>
               </a>
               <a href="#" className="sidebar_nav_items">
@@ -253,6 +256,7 @@ export default function Dashboard(props) {
                 path="/user/:id"
                 render={() => <Profile userid={props.user.user.id} />}
               />
+              <Route exact path="/explore" render={() => <Explore />} />
               <Route
                 path="/"
                 render={() => (

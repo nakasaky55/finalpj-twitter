@@ -17,14 +17,14 @@ export default function PostDetail(props) {
   const [progress, setProgress] = useState(false);
   const [likeNumb, setLikeNumb] = useState(props.post.likes.length);
   const [commentsNumb, setCommentsNumb] = useState(props.post.comments.length);
-
+  console.log(props);
   const checkLike = () => {
     if (!props.post.like_state) {
       setLikeState(true);
-      console.log("liked")
+      console.log("liked");
     } else {
       setLikeState(false);
-      console.log("not like yet")
+      console.log("not like yet");
     }
   };
   const contentFormat = () => {
@@ -95,7 +95,9 @@ export default function PostDetail(props) {
     );
     const data = await url.json();
     if (data.message == "success") {
-      props.getPosts(1);
+      if (history.location.pathname.split("/")[1] == "user") {
+        props.getCurrentuser();
+      } else props.getPosts(1);
     }
   };
 
