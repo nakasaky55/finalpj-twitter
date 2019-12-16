@@ -160,7 +160,7 @@ export default function Profile(props) {
             cloudName="hslqp9lo2"
             publicId={avaUrl}
             responsive
-            style={{maxWidth:"100%"}}
+            style={{ width: "100%", height: "100%" }}
           >
             <Transformation gravity="face" crop="scale" />
           </Image>
