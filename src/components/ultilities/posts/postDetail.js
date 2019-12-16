@@ -32,7 +32,7 @@ export default function PostDetail(props) {
     const contentFormatted = content
       .map(word => {
         if (word.charAt(0) === "#") {
-          return `<a href="#">${word}</a>`;
+          return `<a href="/trending/${word.replace("#","")}">${word}</a>`;
         }
         return word;
       })

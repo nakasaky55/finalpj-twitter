@@ -4,6 +4,7 @@ import moment from "moment";
 import { Image, Row, Col, Button, Spinner } from "react-bootstrap";
 
 import PostDetail from "../posts/postDetail";
+import {Facebook} from "react-content-loader"
 
 export default function Profile(props) {
   const param = useParams();
@@ -148,6 +149,6 @@ export default function Profile(props) {
       </Row>
     </>
   ) : (
-    <h1>Loading</h1>
+    <Facebook />
   );
 }

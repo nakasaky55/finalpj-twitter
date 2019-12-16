@@ -9,6 +9,7 @@ import { CSSTransition } from "react-transition-group";
 import Profile from "../ultilities/profile/profile";
 import Trending from "../ultilities/trending";
 import Explore from "../ultilities/posts/explore";
+import TagClick from "../ultilities/clickTrending/TagClick"
 
 export default function Dashboard(props) {
   function mapStyles(styles) {
@@ -187,7 +188,7 @@ export default function Dashboard(props) {
                   </g>
                 </svg>
               </div>
-              <a href="#" className="sidebar_nav_items">
+              <Link to="/" className="sidebar_nav_items">
                 <div className="sidebar_nav_icon">
                   <i className="far fa-newspaper"></i>
                 </div>
@@ -196,8 +197,8 @@ export default function Dashboard(props) {
                     <span>Dashboard</span>
                   </Link>
                 </div>
-              </a>
-              <a href="#" className="sidebar_nav_items">
+              </Link>
+              <Link to="/explore" className="sidebar_nav_items">
                 <div className="sidebar_nav_icon">
                   <i className="fab fa-slack-hash"></i>
                 </div>
@@ -206,7 +207,7 @@ export default function Dashboard(props) {
                     <span>Explore</span>
                   </Link>
                 </div>
-              </a>
+              </Link>
               <a href="#" className="sidebar_nav_items">
                 <div className="sidebar_nav_icon">
                   <i className="far fa-bell"></i>
@@ -215,16 +216,20 @@ export default function Dashboard(props) {
                   <span>Notifications</span>
                 </div>
               </a>
-              <a href="#" className="sidebar_nav_items">
+              <Link
+                to={`/user/${props.user.user.id}`}
+                className="sidebar_nav_items"
+              >
                 <div className="sidebar_nav_icon">
                   <i className="far fa-user-circle"></i>
                 </div>
+
                 <Link to={`/user/${props.user.user.id}`}>
                   <div className="sidebar_nav_text">
                     <span>Profile</span>
                   </div>
                 </Link>
-              </a>
+              </Link>
 
               <div className="sidebar_nav_items">
                 <Button className="btn-custom tweet-btn ">
@@ -255,6 +260,11 @@ export default function Dashboard(props) {
                 exact
                 path="/user/:id"
                 render={() => <Profile userid={props.user.user.id} />}
+              />
+              <Route
+                exact
+                path="/trending/:pathParam?"
+                render={() => <TagClick />}
               />
               <Route exact path="/explore" render={() => <Explore />} />
               <Route

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { List } from "react-content-loader";
-
+import { useParams } from "react-router-dom";
 import PostDetail from "../posts/postDetail";
 
-export default function Explore() {
+export default function TagClick() {
+  const param = useParams();
+  const [queryParam, setQueryParam] = useState(param.pathParam);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [data, setData] = useState([]);
@@ -20,7 +22,10 @@ export default function Explore() {
 
   const getExplore = async () => {
     const resp = await fetch(
-      `${process.env.REACT_APP_PATH}/posts/explore/page=${page}`,
+      `${process.env.REACT_APP_PATH}/posts/trending/${queryParam.replace(
+        "#",
+        ""
+      )}/page=${page}`,
       {
         method: "GET",
         headers: {
@@ -36,8 +41,8 @@ export default function Explore() {
     }
     if (data_received.has_next) {
       setPage(data_received.page);
-      setHasMore(true)
-    }else setHasMore(false)
+      setHasMore(true);
+    } else setHasMore(false);
   };
 
   //create comment
@@ -87,6 +92,15 @@ export default function Explore() {
   useEffect(() => {
     getExplore();
   }, []);
+
+  useEffect(() => {
+    setQueryParam(param.pathParam);
+    setData([]);
+  }, [param.pathParam]);
+
+  useEffect(() => {
+    getExplore();
+  }, [queryParam]);
   return (
     <>
       <InfiniteScroll
