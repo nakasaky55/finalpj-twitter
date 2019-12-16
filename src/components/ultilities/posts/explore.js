@@ -103,6 +103,7 @@ console.log("xx", data)
               handleShow={handleShow}
               setPostDetail={setPostDetail}
               avaUrl={item.ava_url}
+              content_img={item.content_img}
             />
           );
         })}

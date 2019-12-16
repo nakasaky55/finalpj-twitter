@@ -171,6 +171,11 @@ ul {
   color: red;
 }
 
+.input-standard{
+  width: 100%;
+  margin: 20px 0;
+}
+
 .btn-custom:focus {
   background-color: red;
   border: none;

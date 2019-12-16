@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Toast } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
+import { TextField, Button as MaterialButton } from "@material-ui/core";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import Button from "@material-ui/core/Button";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ErrorIcon from "@material-ui/icons/Error";
+import InfoIcon from "@material-ui/icons/Info";
+import CloseIcon from "@material-ui/icons/Close";
+import { amber, green } from "@material-ui/core/colors";
+import IconButton from "@material-ui/core/IconButton";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import WarningIcon from "@material-ui/icons/Warning";
+import { makeStyles } from "@material-ui/core/styles";
+
 export default function Login(props) {
+  const useStyles2 = makeStyles(theme => ({
+    margin: {
+      margin: theme.spacing(1)
+    }
+  }));
+  const classes = useStyles2();
+  const [open, setOpen] = useState("none");
+  const [variantCustom, setVariant] = useState("info");
+  const [messageCustom, setMessageCustom] = useState("");
   // console.log("login prop", props)
   const history = useHistory();
   const goDashboard = () => {
@@ -26,14 +50,79 @@ export default function Login(props) {
     });
     const data = await resp.json();
 
-    
-
     if (data.state) {
       sessionStorage.setItem("token", data.token);
       console.log("data returns from api", data.state);
       goDashboard();
+    }else {
+      setVariant("error");
+      setMessageCustom(data.message);
+      setOpen("flex")
     }
   };
+
+  const variantIcon = {
+    success: CheckCircleIcon,
+    warning: WarningIcon,
+    error: ErrorIcon,
+    info: InfoIcon
+  };
+
+  const useStyles1 = makeStyles(theme => ({
+    success: {
+      backgroundColor: green[600]
+    },
+    error: {
+      backgroundColor: theme.palette.error.dark
+    },
+    info: {
+      backgroundColor: theme.palette.primary.main
+    },
+    warning: {
+      backgroundColor: amber[700]
+    },
+    icon: {
+      fontSize: 20
+    },
+    iconVariant: {
+      opacity: 0.9,
+      marginRight: theme.spacing(1)
+    },
+    message: {
+      display: "flex",
+      alignItems: "center"
+    }
+  }));
+
+  function MySnackbarContentWrapper(props) {
+    const classes = useStyles1();
+    const { className, onClose, variant, ...other } = props;
+    const Icon = variantIcon[variant];
+
+    return (
+      <SnackbarContent
+        style={{ display: open }}
+        className={clsx(classes[variant], className)}
+        aria-describedby="client-snackbar"
+        message={
+          <span id="client-snackbar">
+            <Icon className={clsx(classes.icon, classes.iconVariant)} />
+            {messageCustom}
+          </span>
+        }
+        action={[
+          <IconButton
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick={() => setOpen("none")}
+          >
+            <CloseIcon className={classes.icon} />
+          </IconButton>
+        ]}
+      />
+    );
+  }
   return (
     <>
       <style type="text/css">
@@ -67,22 +156,51 @@ export default function Login(props) {
             </Toast.Header>
             {/* <Toast.Body>You're successfully sign up.</Toast.Body> */}
           </Toast>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control name="email" type="email" placeholder="Enter email" />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
-          </Form.Group>
-
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              name="password"
-              type="password"
-              placeholder="Password"
+          <form
+            onSubmit={e => {
+              console.log("submit");
+              handleSubmit(e);
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <MySnackbarContentWrapper
+              variant={variantCustom}
+              // className={classes.margin}
+              message="This is a warning message!"
             />
-          </Form.Group>
+            <br></br>
+            <TextField
+              required
+              id="standard-email"
+              type="email"
+              name="email"
+              label="Email"
+              className="input-standard"
+            />
+
+            <TextField
+              required
+              id="standard-password"
+              type="password"
+              name="password"
+              label="Password"
+              className="input-standard"
+            />
+
+            <MaterialButton
+              variant="contained"
+              type="submit"
+              style={{
+                marginTop: "10px",
+                backgroundColor: "#1da1f2",
+                color: "white",
+                margin:"10px 0"
+              }}
+            >
+              Sign in
+            </MaterialButton>
+          </form>
           <Form.Group controlId="formBasicCheckbox">
             <p>
               <button
@@ -93,9 +211,6 @@ export default function Login(props) {
               </button>
             </p>
           </Form.Group>
-          <button type="submit" className="btn-signin">
-            Sign in
-          </button>
           <div>
             <p>
               Don't have an account ? Sign up here{" "}

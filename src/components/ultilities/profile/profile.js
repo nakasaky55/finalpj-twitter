@@ -8,7 +8,8 @@ import {
   Transformation,
   CloudinaryContext
 } from "cloudinary-react";
-
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import {Button as ButtonMaterial} from "@material-ui/core"
 import PostDetail from "../posts/postDetail";
 import { Facebook } from "react-content-loader";
 
@@ -142,7 +143,7 @@ export default function Profile(props) {
           md={3}
           sm={12}
           style={{
-            backgroundColor: "red",
+            // backgroundColor: "red",
             maxWidth: "100%",
             maxHeight: "100%"
           }}
@@ -159,7 +160,7 @@ export default function Profile(props) {
             cloudName="hslqp9lo2"
             publicId={avaUrl}
             responsive
-            style={{ width: "100%" }}
+            style={{ width: "100%", height: "100%" }}
           >
             <Transformation gravity="face" crop="scale" />
           </Image>
@@ -207,9 +208,15 @@ export default function Profile(props) {
                           encoded(e.target.files[0]);
                         }}
                       ></input>
-                      <button className="btn-follow" type="submit">
-                        Submit
-                      </button>
+                      <ButtonMaterial
+                        variant="contained"
+                        color="default"
+                        // className={classes.button}
+                        startIcon={<CloudUploadIcon />}
+                        type="submit"
+                      >
+                        Upload
+                      </ButtonMaterial>
                     </form>
                   </Accordion.Collapse>
                 </Card>
@@ -253,6 +260,7 @@ export default function Profile(props) {
                 post={post}
                 getCurrentuser={getCurrentuser}
                 avaUrl={avaUrl}
+                content_img={post.content_img}
               />
             );
           })}

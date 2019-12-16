@@ -189,7 +189,7 @@ export default function CurrentPost(props) {
               cloudName="hslqp9lo2"
               publicId={props.user.user.ava_url ? props.user.user.ava_url : ""}
               responsive
-              style={{ maxWidth: "50px", margin:"0 10px" }}
+              style={{ maxWidth: "50px", margin: "0 10px" }}
             >
               <Transformation gravity="face" radius="max" crop="scale" />
             </ImageCloud>
@@ -242,7 +242,15 @@ export default function CurrentPost(props) {
             </div>
           </div>
         </div>
-        <hr></hr>
+        <div>
+          <ImageCloud
+            cloudName="hslqp9lo2"
+            publicId={currPost.content_img ? currPost.content_img : ""}
+            responsive
+          >
+            
+          </ImageCloud>
+        </div>
         <div className="d-flex justify-content-around">
           {progress ? (
             <Spinner animation="border" variant="danger" />
@@ -280,7 +288,13 @@ export default function CurrentPost(props) {
       >
         {currPostComment &&
           currPostComment.map(comment => {
-            return <Comment comment={comment} contentFormat={contentFormat} />;
+            return (
+              <Comment
+                comment={comment}
+                contentFormat={contentFormat}
+                avaUrl={comment.ava_url}
+              />
+            );
           })}
       </Col>
       <Modal show={show} onHide={handleClose} animation={false}>

@@ -12,12 +12,16 @@ import {
 import PostDetail from "./posts/postDetail";
 import { List } from "react-content-loader";
 import InfiniteScroll from "react-infinite-scroll-component";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import { Button as ButtonMaterial } from "@material-ui/core";
 
 export default function MainConent(props) {
   //control modal comment show/hide
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [fileEncoded, setFileEncoded] = useState(null);
+  const [loadingUpload, SetLoadingUpload] = useState(false);
 
   //get input to create post when user submit
   const [input, setInput] = useState("");
@@ -44,7 +48,8 @@ export default function MainConent(props) {
 
     const inputData = {
       content: input.trim(),
-      hastags: tempHastag
+      hastags: tempHastag,
+      file: fileEncoded
     };
     const resp = await fetch(`${process.env.REACT_APP_PATH}/posts/create`, {
       method: "POST",
@@ -90,6 +95,7 @@ export default function MainConent(props) {
     const data = await resp.json();
     if (data.message == "created") {
       handleClose();
+      setFileEncoded("")
     }
   };
 
@@ -117,6 +123,26 @@ export default function MainConent(props) {
       setPosts(data.data_received);
     } else setPosts(posts.concat(data.data_received));
     setControlPosting(false);
+  };
+
+  const encoded = file => {
+    const conv = new FileReader();
+    conv.onload = fileLoadedEvent => {
+      var srcData = fileLoadedEvent.target.result;
+      var newImage = document.createElement("img");
+      newImage.src = srcData;
+      document.getElementById("dummy").innerHTML = newImage.outerHTML;
+      console.log(
+        document.getElementById("dummy").getElementsByTagName("img")[0].src
+      );
+      // document.getElementById("txt").value = document.getElementById(
+      //   "dummy"
+      // ).innerHTML;
+      return setFileEncoded(
+        document.getElementById("dummy").getElementsByTagName("img")[0].src
+      );
+    };
+    conv.readAsDataURL(file);
   };
 
   //Control cursor pointer
@@ -243,15 +269,24 @@ export default function MainConent(props) {
               {" "}
             </div>
 
-            <div className="d-flex justify-content-end maincontent_input_description">
-              <p>{130 - input.length} characters remaining</p>
-              <button
-                disabled={input.length > 130 || input.length === 0}
-                className="btn-post"
-                type="submit"
-              >
-                {controlPosting ? <Spinner animation="grow" /> : "Post"}
-              </button>
+            <div>
+              <div className="d-flex justify-content-between maincontent_input_description">
+                <input
+                  type="file"
+                  name="avatar"
+                  onChange={e => {
+                    encoded(e.target.files[0]);
+                  }}
+                ></input>
+                <p>{130 - input.length} characters remaining</p>
+                <button
+                  disabled={input.length > 130 || input.length === 0}
+                  className="btn-post"
+                  type="submit"
+                >
+                  {controlPosting ? <Spinner animation="grow" /> : "Post"}
+                </button>
+              </div>
             </div>
           </Form>
         </Col>
@@ -281,6 +316,7 @@ export default function MainConent(props) {
                     handleShow={handleShow}
                     setPostDetail={setPostDetail}
                     getPosts={getPosts}
+                    content_img={post.content_img}
                   />
                 );
               })}
@@ -288,6 +324,7 @@ export default function MainConent(props) {
           )}
         </Container>
       </Row>
+      <div id="dummy" style={{display:"none"}}></div>
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>

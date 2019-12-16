@@ -176,6 +176,13 @@ export default function PostDetail(props) {
           </div>
         </div>
       </div>
+      <div className="d-flex justify-content-center">
+        <ImageCloud
+          cloudName="hslqp9lo2"
+          publicId={props.content_img ? props.content_img : ""}
+          responsive
+        ></ImageCloud>
+      </div>
       <div className="d-flex justify-content-around">
         {progress ? (
           <Spinner animation="border" variant="danger" />
