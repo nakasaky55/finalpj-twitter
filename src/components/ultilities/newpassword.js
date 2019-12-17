@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 export default function NewPassword(props) {
   //Toast login
   // const [showMessage, setshowMessage] = useState("none");
   const [tokenValid, setTokenValid] = useState(true);
-
+const history = useHistory();
   const param = useParams();
 
   const checkTokenValid = async () => {
@@ -46,6 +46,7 @@ export default function NewPassword(props) {
 
     if (data.message === "Success") {
       props.toggleShowA();
+      history.push("/")
     }
   };
 
