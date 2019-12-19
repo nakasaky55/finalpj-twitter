@@ -48,9 +48,10 @@ export default function Landing(props) {
         <Row>
           <Col
             className="left-landing d-flex justify-content-center align-items-center"
-            xs={6}
+            lg={6}
             md={6}
-            sm={12}
+            sm={6}
+            // className="d-lg-block d-md-block d-sm-none"
           >
             <svg
               className="twitterIcon-bird"
@@ -95,9 +96,9 @@ export default function Landing(props) {
           </Col>
           <Col
             className="right-landing d-flex justify-content-center align-items-center"
-            xs={6}
+            lg={6}
             md={6}
-            sm={12}
+            sm={6}
           >
             <Switch>
               <Route

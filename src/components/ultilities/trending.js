@@ -3,8 +3,14 @@ import { Row, Col, InputGroup, FormControl } from "react-bootstrap";
 import HashLoader from "react-spinners/HashLoader";
 
 import TrendingHastag from "./TrendingHastag";
+import { Divider } from "@material-ui/core";
+
+import { useHistory } from "react-router-dom";
 
 export default function Trending() {
+  const [search, setSearch] = useState(null);
+console.log(search)
+  const history = useHistory();
   const override = `
     display: block;
     margin: 10px auto;
@@ -14,11 +20,6 @@ export default function Trending() {
   //store data trending
   const [dataTrending, setDataTrending] = useState([]);
   const [loadingTrending, setLoadingTrending] = useState(true);
-
-  const submitSearch = async e => {
-    e.preventDefault();
-    console.log("object", e.target.input.value);
-  };
 
   const getTrending = async () => {
     const resp = await fetch(`${process.env.REACT_APP_PATH}/posts/hastags`, {
@@ -42,20 +43,29 @@ export default function Trending() {
   }, []);
 
   return (
-    <div className="d-flex flex-column">
-      <div>
-        <form onSubmit={e => submitSearch(e)}>
+    <div className="d-flex flex-column ">
+      <div style={{ marginTop: "10px" }}>
+        <form
+          onSubmit={e => {
+            e.stopPropagation();
+            history.push(`/search/`+search);
+          }}
+        >
           <FormControl
+            onChange={e => setSearch(e.target.value)}
             className="trending-input"
             name="input"
-            placeholder="Enter your curious"
-            aria-label="Enter your curious"
+            placeholder="Enter username"
+            aria-label="Enter username"
             aria-describedby="basic-addon1"
           />
         </form>
       </div>
       <div className="trending-board">
-        <h1>Trending</h1>
+        <h1 className="font-weight-light" style={{ paddingLeft: "10px" }}>
+          Trending
+        </h1>
+        <Divider />
         {loadingTrending ? (
           <HashLoader
             css={override}

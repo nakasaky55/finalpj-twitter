@@ -1,35 +1,46 @@
 import React from "react";
-import { Image } from "react-bootstrap";
+import { Image, Row, Col } from "react-bootstrap";
 import moment from "moment";
 import { Image as ImageCloud, Transformation } from "cloudinary-react";
 
 export default function Comment(props) {
   return (
-    <div className="d-flex justify-content-start postdetail-head">
-      <div>
+    <Row noGutters="true">
+      <Col lg={2} md={2} sm={4} xs={4}>
         <ImageCloud
           cloudName="hslqp9lo2"
           publicId={props.avaUrl ? props.avaUrl : ""}
           responsive
-          style={{ maxWidth: "60px", margin: "0 10px" }}
         >
-          <Transformation gravity="face" radius="max" crop="thumb" />
-          <Transformation angle="15" />
-          <Transformation effect="trim" />
+          <Transformation
+            width="60"
+            height="60"
+            // gravity="face"
+            responsive
+            radius="max"
+            crop="thumb"
+          />
         </ImageCloud>
-      </div>
-      <div className="post-detail-content">
-        <b>{props.comment.author}</b>
-        <small className="text-muted">
-          {" "}
-          {moment(props.comment.created_at).fromNow()}
-        </small>
+      </Col>
+      <Col
+        className="post-detail-content flex-column"
+        style={{ width: "100%" }}
+      >
+        <div className="d-flex">
+          <b>
+            {props.comment.author}{" "}
+            <span className="text-muted font-weight-normal">
+              {" "}
+              {moment(props.comment.created_at).fromNow()}
+            </span>
+          </b>
+        </div>
         <p
           // dangerouslySetInnerHTML={contentFormat()}
           className="font-weight-normal"
-          dangerouslySetInnerHTML={props.contentFormat(props.comment.content)}
+          dangerouslySetInnerHTML={props.contentFormat(props.comment)}
         ></p>
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 }

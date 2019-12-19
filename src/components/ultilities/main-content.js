@@ -13,7 +13,16 @@ import PostDetail from "./posts/postDetail";
 import { List } from "react-content-loader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import { Button as ButtonMaterial } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
+
+import {
+  Image as ImageCloudinary,
+  Video,
+  Transformation,
+  CloudinaryContext
+} from "cloudinary-react";
+import { Divider } from "@material-ui/core";
 
 export default function MainConent(props) {
   //control modal comment show/hide
@@ -39,7 +48,7 @@ export default function MainConent(props) {
   const [page, setPage] = useState(1);
 
   const [hasMore, setHasMore] = useState(false);
-
+  console.log("object,", props);
   //create a new post
   const handleSubmit = async event => {
     setControlPosting(true);
@@ -71,7 +80,7 @@ export default function MainConent(props) {
     document.getElementById("input-markup").innerHTML = "";
     if (!controlPosting) {
       setInput("");
-      document.getElementById('inputFile').value =""
+      document.getElementById("inputFile").value = "";
     }
   };
 
@@ -96,7 +105,7 @@ export default function MainConent(props) {
     const data = await resp.json();
     if (data.message == "created") {
       handleClose();
-      setFileEncoded("")
+      setFileEncoded("");
     }
   };
 
@@ -146,6 +155,20 @@ export default function MainConent(props) {
     conv.readAsDataURL(file);
   };
 
+  //control contenteditable when focus
+  function setOnClick(e) {
+    const selected = document.getElementById(e.target.id);
+    selected.style.borderStyle = "none ";
+  }
+
+  function setBlur(e) {
+    const selected = document.getElementById(e.target.id);
+    selected.style.borderStyle = "none";
+  }
+
+  function setFocus(e) {
+    const selected = document.getElementById(e.target.id);
+  }
   //Control cursor pointer
   function setEndOfContenteditable(contentEditableElement) {
     var range, selection;
@@ -189,13 +212,20 @@ export default function MainConent(props) {
                 justify-content: space-around;
             }
             .maincontent_input {
-                width:70%;
+                flex-basis: 70%;
             }
             .maincontent_profile {
-                width: 20%
+                flex-basis: 10%;
+                display: flex;
+                justify-content:center;
+                align-items: flex-start;
             }
             .maincontent_profile img {
-                max-width: 100%
+                // max-width: 80%;
+
+            }
+            .content{
+              margin-top:20px;
             }
             .btn-post {
             border-radius: 15px;
@@ -204,9 +234,12 @@ export default function MainConent(props) {
             background-color:#1da1f2;
             width: 100px;
             margin-left: 10px;
+            height:35px;
             }
             .maincontent_input_description{
-                margin-top:20px;
+                margin-top:10px;
+                margin-bottom:10px;
+                align-items:center;
             }
             button:disabled,
             button[disabled] {
@@ -214,119 +247,156 @@ export default function MainConent(props) {
             }
             #input-markup {
               min-height: 100px;
-              background-color: white;
               color: black;
-              border: 1px solid black;
+              border-radius:25px;
+              padding:0 5px;
             }
-            
+            .avatar-input{
+              display: flex;
+              justify-content: center;
+              align-items:flex-start;
+            }
+            .MuiSvgIcon-root{
+              font-size:34px;
+            }
             `}
       </style>
       <Row>
-        <Col className="maincontent_top" lg={{ span: 9, offset: 1 }}>
-          <div className="maincontent_profile bg-white">
-            <Image
-              src="https://www.premierchoicegroup.com/wp-content/uploads/place-holder-avatar.jpg"
-              roundedCircle
-            />
-          </div>
-          <Form
-            className="maincontent_input d-flex flex-column"
-            onSubmit={e => {
-              handleSubmit(e);
-            }}
+        <Col lg={12} md={12} sm={12} xs={12}>
+          <h1 className="font-weight-bold">Lastest Tweet</h1>
+        </Col>
+        <Divider style={{ width: "100%", marginBottom: "10px " }} />
+        <Col className="col-2 avatar-input">
+          <ImageCloudinary
+            cloudName="hslqp9lo2"
+            publicId={props.avaUrl ? props.avaUrl : ""}
+            responsive
+            // style={{ width: "100%", height: "100%" }}
           >
-            <div
-              rows={5}
-              name="content"
-              id="input-markup"
-              onChange={e => {
-                console.log("run");
-              }}
-              onKeyUp={e => {
-                const inputMarkup = document.getElementById("input-markup")
-                  .innerText;
-                setInput(inputMarkup);
-                if (input !== inputMarkup) {
-                  if (inputMarkup && inputMarkup.length > 0) {
-                    let tempString = inputMarkup.split(" ").filter(Boolean);
-                    const htmlString = tempString.map(item => {
-                      if (item.charAt(0) === "#") {
-                        item = `<span class="hastag-markup">${item}</span>`;
-                        return item;
-                      }
+            <Transformation
+              width="60"
+              height="60"
+              // gravity="face"
+              responsive
+              radius="max"
+              crop="thumb"
+            />
+          </ImageCloudinary>
+        </Col>
+        <Col className="col-10">
+          <div
+            contentEditable="true"
+            placeholder="What's on your mind ?"
+            rows={4}
+            name="content"
+            id="input-markup"
+            onChange={e => {
+              console.log("run");
+            }}
+
+            onKeyUp={e => {
+              const inputMarkup = document.getElementById("input-markup")
+                .innerText;
+              setInput(inputMarkup);
+              if (input !== inputMarkup) {
+                if (inputMarkup && inputMarkup.length > 0) {
+                  let tempString = inputMarkup.split(" ").filter(Boolean);
+                  const htmlString = tempString.map(item => {
+                    if (item.charAt(0) === "#") {
+                      item = `<span class="hastag-markup">${item}</span>`;
                       return item;
-                    });
+                    }
+                    return item;
+                  });
 
-                    document.getElementById(
-                      "input-markup"
-                    ).innerHTML = htmlString.join(" ");
-                  }
+                  document.getElementById(
+                    "input-markup"
+                  ).innerHTML = htmlString.join(" ");
                 }
-                setEndOfContenteditable(e.target);
-              }}
-              suppressContentEditableWarning={true}
-              contentEditable
-            >
-              {" "}
-            </div>
-
-            <div>
-              <div className="d-flex justify-content-between maincontent_input_description">
-                <input
-                  type="file"
-                  name="avatar"
-                  id="inputFile"
-                  onChange={e => {
-                    encoded(e.target.files[0]);
-                  }}
-                ></input>
-                <p>{130 - input.length} characters remaining</p>
-                <button
-                  disabled={input.length > 130 || input.length === 0}
-                  className="btn-post"
-                  type="submit"
-                >
-                  {controlPosting ? <Spinner animation="grow" /> : "Post"}
-                </button>
-              </div>
-            </div>
-          </Form>
+              }
+              setEndOfContenteditable(e.target);
+            }}
+            suppressContentEditableWarning={true}
+          >
+            {/* <span style={{color:"grey"}}>What's on your mind ?</span> */}
+          </div>
+          <Divider style={{ width: "100%",padding:"0" }} />
         </Col>
       </Row>
+
       <Row>
-        <Container>
-          {props.loadUser || controlPosting ? (
-            <Row>
-              <List className="loader-custom" />
-            </Row>
-          ) : (
-            <InfiniteScroll
-              dataLength={posts.length}
-              next={() => getPosts(page)}
-              hasMore={hasMore}
-              loader={<List className="loader-custom" />}
+        <Col
+          lg={{ span: 10, offset: 2 }}
+          md={{ span: 10, offset: 2 }}
+          sm={{ span: 10, offset: 2 }}
+          xs={{ span: 10, offset: 2 }}
+        >
+          <div className="d-flex justify-content-between maincontent_input_description">
+            <input
+              type="file"
+              name="avatar"
+              id="inputFile"
+              onChange={e => {
+                encoded(e.target.files[0]);
+              }}
+              style={{ display: "none" }}
+            ></input>
+            <label htmlFor="inputFile">
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+              >
+                <PhotoCamera />
+              </IconButton>
+            </label>
+            <p className="d-flex align-items-center">
+              {130 - input.length} characters remaining
+            </p>
+            <button
+              disabled={input.length > 130 || input.length === 0}
+              className="btn-post"
+              type="submit"
+              onClick={e => handleSubmit(e)}
             >
-              {posts.map(post => {
-                return (
-                  <PostDetail
-                    key={post.id}
-                    post={post}
-                    token={sessionStorage.getItem("token")}
-                    user={props.user}
-                    userid={props.user.user.id}
-                    avaUrl={post.ava_url}
-                    handleShow={handleShow}
-                    setPostDetail={setPostDetail}
-                    getPosts={getPosts}
-                    content_img={post.content_img}
-                  />
-                );
-              })}
-            </InfiniteScroll>
-          )}
-        </Container>
+              {controlPosting ? <Spinner animation="grow" /> : "Post"}
+            </button>
+          </div>
+        </Col>
       </Row>
-      <div id="dummy" style={{display:"none"}}></div>
+      <Divider />
+      <Row className="post-detail-background" style={{ paddingTop: "10px" }}>
+        {props.loadUser || controlPosting ? (
+          <Row>
+            <List className="loader-custom" />
+          </Row>
+        ) : (
+          <InfiniteScroll
+            dataLength={posts.length}
+            next={() => getPosts(page)}
+            hasMore={hasMore}
+            loader={<List className="loader-custom" />}
+          >
+            {posts.map(post => {
+              return (
+                <PostDetail
+                  key={post.id}
+                  post={post}
+                  token={sessionStorage.getItem("token")}
+                  user={props.user}
+                  userid={props.user.user.id}
+                  avaUrl={post.ava_url}
+                  handleShow={handleShow}
+                  setPostDetail={setPostDetail}
+                  getPosts={getPosts}
+                  content_img={post.content_img}
+                />
+              );
+            })}
+          </InfiniteScroll>
+        )}
+      </Row>
+      <div id="dummy" style={{ display: "none" }}></div>
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>

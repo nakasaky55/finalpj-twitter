@@ -3,6 +3,7 @@ import { Col, Image, Spinner, Row, Modal, Form, Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import { Facebook } from "react-content-loader";
+import Divider from "@material-ui/core/Divider";
 
 import { Image as ImageCloud, Transformation } from "cloudinary-react";
 import Comment from "../posts/comment";
@@ -26,6 +27,7 @@ export default function CurrentPost(props) {
 
   //store post get from api
   const [currPost, setCurrPost] = useState(null);
+  console.log("currrr", currPost)
   const [currPostProgress, setCurrPostProgress] = useState(false);
   const [currPostComment, setCurrPostComment] = useState(null);
   const [currPostCommentProgress, setCurrPostCommentProgress] = useState(
@@ -43,7 +45,7 @@ export default function CurrentPost(props) {
   };
 
   const contentFormat = data => {
-    const content = data;
+    const content = data.content;
     const contentFormatted = content
       .split(" ")
       .map(word => {
@@ -140,7 +142,7 @@ export default function CurrentPost(props) {
     const data = await resp.json();
     if (data.message == "created") {
       handleClose();
-      setCurrPostComment(data.comments);
+      setCurrPostComment(data.content);
     }
   };
 
@@ -179,34 +181,44 @@ export default function CurrentPost(props) {
 
   return currPostProgress ? (
     <Row>
-      <Col
-        lg={{ span: 9, offset: 1 }}
-        className="post-detail d-flex flex-column"
-      >
-        <div className="d-flex justify-content-start postdetail-head">
-          <div>
+      <Col className="post-detail d-flex flex-column">
+        <Row>
+          <Col lg={2} md={2} sm={4} xs={4} className="avatar-input">
             <ImageCloud
+              style={{ margin: "0px" }}
               cloudName="hslqp9lo2"
-              publicId={props.user.user.ava_url ? props.user.user.ava_url : ""}
+              publicId={currPost.author_ava_url ? currPost.author_ava_url : ""}
               responsive
-              style={{ maxWidth: "50px", margin: "0 10px" }}
             >
-              <Transformation gravity="face" radius="max" crop="scale" />
+              <Transformation
+                width="60"
+                height="60"
+                // gravity="face"
+                responsive
+                radius="max"
+                crop="thumb"
+              />
             </ImageCloud>
-          </div>
-          <div className="post-detail-content">
-            <b>{currPost.author}</b>
-            <small className="text-muted">
-              {" "}
-              {/* {moment(currPost.created_at).format("hA, Do, MMMM")} */}
-              {moment(currPost.created_at).fromNow()}
-            </small>
-            <p
-              className="font-weight-normal"
-              dangerouslySetInnerHTML={contentFormat(currPost.content)}
-            ></p>
-          </div>
-          <div>
+          </Col>
+          <Col className="d-flex justify-content-between">
+            <div>
+              <b
+                onClick={e => {
+                  e.stopPropagation();
+                  // history.push(`/user/${props.post.author_id}`);
+                }}
+              >
+                {currPost.author}
+              </b>
+              <small className="text-muted">
+                {" "}
+                {moment(currPost.created_at).format("MMM, Do")}
+              </small>
+              <p
+                className="font-weight-normal"
+                dangerouslySetInnerHTML={contentFormat(currPost)}
+              ></p>
+            </div>
             <div class="dropdown dropleft" onClick={e => e.stopPropagation()}>
               <a
                 class="btn-custom text-monospace"
@@ -219,7 +231,7 @@ export default function CurrentPost(props) {
                 <i class="fas fa-chevron-down"></i>
               </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {props.user.user.id == currPost.author_id ? (
+                {props.userid == currPost.author_id ? (
                   <button
                     className="dropdown-item"
                     onClick={() => deleteThisPost()}
@@ -240,53 +252,71 @@ export default function CurrentPost(props) {
                 </a>
               </div>
             </div>
-          </div>
-        </div>
-        <div>
-          <ImageCloud
-            cloudName="hslqp9lo2"
-            publicId={currPost.content_img ? currPost.content_img : ""}
-            responsive
-            style={{maxWidth:"100%"}}
-          >
-            
-          </ImageCloud>
-        </div>
-        <div className="d-flex justify-content-around">
-          {progress ? (
-            <Spinner animation="border" variant="danger" />
-          ) : likeState ? (
-            <button
-              className="btn-function"
-              style={{ color: "red" }}
-              onClick={() => unLikeToggle()}
-            >
-              <i className="fas fa-heart"></i> {likeNumb} unlike
-            </button>
-          ) : (
-            <button className="btn-function" onClick={() => likeToggle()}>
-              <i className="far fa-heart"></i> {likeNumb} like
-            </button>
-          )}
+          </Col>
+        </Row>
 
-          <button className="btn-function">
-            <i className="fas fa-retweet"></i>
-          </button>
-          <button
-            className="btn-function"
-            onClick={() => {
-              handleShow();
-            }}
+        <Row>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            xs={12}
+            className="d-flex justify-content-center"
+            // style={{ maxWidth: "100%" }}
           >
-            <i className="far fa-comment"></i> {commentsNumb}
-          </button>
-        </div>
+            <ImageCloud
+              cloudName="hslqp9lo2"
+              publicId={currPost.content_img ? currPost.content_img : ""}
+              responsive
+              style={{ maxWidth: "100%" }}
+            >
+              <Transformation radius="25" crop="fill" />
+            </ImageCloud>
+          </Col>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            xs={12}
+
+            // style={{ maxWidth: "100%" }}
+          >
+            <div className="d-flex justify-content-around">
+              {progress ? (
+                <Spinner animation="border" variant="danger" />
+              ) : likeState ? (
+                <button
+                  className="btn-function"
+                  style={{ color: "red" }}
+                  onClick={() => unLikeToggle()}
+                >
+                  <i className="fas fa-heart"></i> {likeNumb} unlike
+                </button>
+              ) : (
+                <button className="btn-function" onClick={() => likeToggle()}>
+                  <i className="far fa-heart"></i> {likeNumb} like
+                </button>
+              )}
+
+              <button className="btn-function">
+                <i className="fas fa-retweet"></i>
+              </button>
+              <button
+                className="btn-function"
+                onClick={() => {
+                  handleShow();
+                }}
+              >
+                <i className="far fa-comment"></i> {commentsNumb}
+              </button>
+            </div>
+          </Col>
+        </Row>
       </Col>
-      <Col
-        lg={{ span: 8, offset: 2 }}
-        sm={{ span: 8, offset: 2 }}
-        className="mt-4"
-      >
+      <Col lg={12} md={12} sm={12} xs={12}>
+        <Divider />
+      </Col>
+      <Col lg={12} md={12} sm={12} xs={12} className="mt-4">
         {currPostComment &&
           currPostComment.map(comment => {
             return (

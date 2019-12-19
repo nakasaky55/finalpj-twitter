@@ -9,7 +9,8 @@ import { CSSTransition } from "react-transition-group";
 import Profile from "../ultilities/profile/profile";
 import Trending from "../ultilities/trending";
 import Explore from "../ultilities/posts/explore";
-import TagClick from "../ultilities/clickTrending/TagClick"
+import TagClick from "../ultilities/clickTrending/TagClick";
+import SearchResult from "../ultilities/profile/SearchResult"
 
 export default function Dashboard(props) {
   function mapStyles(styles) {
@@ -68,16 +69,18 @@ export default function Dashboard(props) {
 
   useEffect(() => {
     props.getUser();
-    document.title = "Dashboard"
+    document.title = "Dashboard";
   }, []);
   return (
     <>
       <style type="text/css">
         {`
+
     @media only screen and (max-width: 991px) {
       
       .sidebar_nav_text{
         display:none;
+        
       }
       .fa-feather {
         display: block
@@ -88,19 +91,36 @@ export default function Dashboard(props) {
       }
     }
 
+    
+
+    @media only screen and (max-width:1199px) {
+      .sidebar_nav_items {
+        padding-left:0 !important;
+      }
+    }
+
+    
+
     .dashboard_logo{
       width:47px;
       height: 47px;
     }
 
-    .contains {
-      // background-color: black;
-      padding:0;
+    .sidebar-sm{
+      display:none;
     }
-    .contains > .row {
-      width:100%;
-      margin:0;
+
+    .custom-nav{
+      display:flex;
+      justify-content: center;
+      flex-direction:column;
+      align-items: center;
     }
+
+    .sidebar_nav_icon {
+      font-size:16px;
+    }
+
     
     .sb-child {
       min-height: 100vh;
@@ -114,20 +134,21 @@ export default function Dashboard(props) {
       position:sticky;
       top:0;
       padding-top: 10px;
-      border-right: 3px solid #0000003b
+      border-right: 1px solid #0000003b
     }
     .sidebar_nav_text {
       min-width:50%;
-      padding-left:10px
+      padding-left:10px;
+      font-weight: 300;
     }
     
     .sidebar_nav_items{
-      min-width: 60%;
-      height:50px;
+      width:100%;
       line-height:50px;
       display:flex;
-      justify-content: center;
-      margin-bottom: 15px;
+      justify-content: flex-start;
+      margin-bottom: 35px;
+      font-weight: 300;
       transition: 0.3s ease;
     }
     .sidebar_nav_items button {
@@ -142,8 +163,7 @@ export default function Dashboard(props) {
     }
 
     .sidebar a:hover {
-      background-color:#1da1f2;
-      color: white;
+      color: #1da1f2;
       text-decoration: none;
       border-radius:10px;
       transition: 0.3s ease;
@@ -153,6 +173,7 @@ export default function Dashboard(props) {
     .content {
       background-color: white;
       min-height: 110vh;
+      padding:0;
     }
     .trending {
       height: 100vh;
@@ -166,20 +187,57 @@ export default function Dashboard(props) {
     }
     .tweet-btn {
       background-color:#1da1f2;
+      max-width:80%
     }
     .logout-btn {
       background-color: #C84630;
+      max-width:80%;
+      display: flex;
+      flex-wrap: inherit;
+      padding: 05px;
+    }
+    .svg-twitter {
+      width: 45px;
+      height: 45px;
+      border-radius: 30px;
+      padding: 7px;
+      transition: 0.5s ease;
+      cursor: pointer;
+    }
+    .svg-twitter:hover {
+      background-color:#c5e8db;
+      transition: 0.5s ease;
     }
     `}
       </style>
-      <Container fluid="true" className="contains">
+      <Container className="contains">
+        <div className="sidebar-sm sticky-top">
+          <div className="d-flex" style={{ height: "100%" }}>
+            <div className="sidebar-sm-item">
+              <Link to="/">
+                <i className="far fa-newspaper sidebar-sm-icon"></i>
+              </Link>
+            </div>
+            <div className="sidebar-sm-item sidebar-sm-icon">
+              <i className="far fa-newspaper"></i>
+            </div>
+            <div className="sidebar-sm-item sidebar-sm-icon">
+              <i className="far fa-newspaper"></i>
+            </div>
+            <div className="sidebar-sm-item sidebar-sm-icon">
+              <i className="far fa-newspaper"></i>
+            </div>
+          </div>
+        </div>
         <Row>
-          <Col lg={2} md={2} sm={12} className="sb-child sidebar">
-            <nav className="d-flex flex-column justify-content-center align-items-center custom-nav">
+          <Col lg={2} md={2} sm={2} xs={2} className="sb-child sidebar">
+            <nav className="custom-nav">
               <div className="sidebar_nav_items">
                 <svg
                   viewBox="0 0 24 24"
-                  style={{ width: "47px", height: "47px" }}
+
+                  className="svg-twitter"
+                  onClick={() => history.push("/")}
                 >
                   <g>
                     <path
@@ -235,27 +293,32 @@ export default function Dashboard(props) {
               <div className="sidebar_nav_items">
                 <Button className="btn-custom tweet-btn ">
                   <i className="fas fa-feather"></i>
-                  <span className="sidebar_nav_text">Tweet</span>
+                  <span className="sidebar_nav_text tweet-text">Tweet</span>
                 </Button>
               </div>
               <div className="sidebar_nav_items">
                 <Button
-                  className="btn-custom logout-btn "
+                  className="btn-custom logout-btn"
                   onClick={() => doLogout()}
                 >
                   <i className="fas fa-sign-out-alt"></i>
-                  <span className="sidebar_nav_text">Logout</span>
+                  <span className="sidebar_nav_text logout-text">Logout</span>
                 </Button>
               </div>
             </nav>
           </Col>
-          <Col lg={7} md={10} sm={12} className="sb-child content">
-            Welcome {props.user.user.username}!
+          <Col lg={7} md={10} sm={10} xs={10} className="sb-child content">
             <Switch>
               <Route
                 exact
                 path="/post/:id"
                 render={() => <CurrentPost user={props.user} />}
+              />
+              <Route
+              exact
+              path="/search/:input"
+              render={() => <SearchResult />}
+
               />
               <Route
                 exact
@@ -275,13 +338,13 @@ export default function Dashboard(props) {
                     findToken={props.findToken}
                     user={props.user}
                     loadUser={props.loadUser}
+                    avaUrl={props.user.user.ava_url}
                   />
                 )}
               />
             </Switch>
           </Col>
-          <Col className="sb-child trending d-none d-lg-block">
-            <h1>Trending</h1>
+          <Col className="sb-child trending d-none d-lg-block border-left">
             <Trending />
           </Col>
         </Row>

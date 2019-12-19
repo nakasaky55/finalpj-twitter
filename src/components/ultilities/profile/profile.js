@@ -8,8 +8,8 @@ import {
   Transformation,
   CloudinaryContext
 } from "cloudinary-react";
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {Button as ButtonMaterial} from "@material-ui/core"
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import { Button as ButtonMaterial } from "@material-ui/core";
 import PostDetail from "../posts/postDetail";
 import { Facebook } from "react-content-loader";
 
@@ -147,7 +147,7 @@ export default function Profile(props) {
             maxWidth: "100%",
             maxHeight: "100%"
           }}
-          className="d-flex justify-content-center"
+          className="d-flex justify-content-center align-items-center"
         >
           {/* <Image
             // className="image-post-detail"
@@ -159,10 +159,14 @@ export default function Profile(props) {
           <Image
             cloudName="hslqp9lo2"
             publicId={avaUrl}
-            responsive
-            style={{ width: "100%", height: "100%" }}
           >
-            <Transformation gravity="face" crop="scale" />
+            <Transformation
+              width="100"
+              height="100"
+              // gravity="face"
+              radius="max"
+              crop="fill"
+            />
           </Image>
         </Col>
         <Col className="profile-right">
