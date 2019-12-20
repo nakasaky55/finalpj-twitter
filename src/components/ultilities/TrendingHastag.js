@@ -2,7 +2,6 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 export default function TrendingHastag(props) {
-  console.log(props);
   return (
     <div className="trending-detail" id={props.index == 1 ? "trending-border":""}>
       <p className="font-weight-lighter" style={{fontSize:"16px", margin:"0px"}}> {props.index + 1} - Trending </p>

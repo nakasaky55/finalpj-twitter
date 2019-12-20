@@ -27,7 +27,7 @@ export default function CurrentPost(props) {
 
   //store post get from api
   const [currPost, setCurrPost] = useState(null);
-  console.log("currrr", currPost)
+  console.log("currrr", currPost);
   const [currPostProgress, setCurrPostProgress] = useState(false);
   const [currPostComment, setCurrPostComment] = useState(null);
   const [currPostCommentProgress, setCurrPostCommentProgress] = useState(
@@ -290,11 +290,11 @@ export default function CurrentPost(props) {
                   style={{ color: "red" }}
                   onClick={() => unLikeToggle()}
                 >
-                  <i className="fas fa-heart"></i> {likeNumb} unlike
+                  <i className="fas fa-heart"></i> {likeNumb}
                 </button>
               ) : (
                 <button className="btn-function" onClick={() => likeToggle()}>
-                  <i className="far fa-heart"></i> {likeNumb} like
+                  <i className="far fa-heart"></i> {likeNumb}
                 </button>
               )}
 

@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 
 export default function Trending() {
   const [search, setSearch] = useState(null);
-console.log(search)
+
   const history = useHistory();
   const override = `
     display: block;
@@ -47,7 +47,7 @@ console.log(search)
       <div style={{ marginTop: "10px" }}>
         <form
           onSubmit={e => {
-            e.stopPropagation();
+            e.preventDefault();
             history.push(`/search/`+search);
           }}
         >

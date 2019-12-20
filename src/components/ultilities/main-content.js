@@ -23,6 +23,7 @@ import {
   CloudinaryContext
 } from "cloudinary-react";
 import { Divider } from "@material-ui/core";
+import { Progress } from "antd";
 
 export default function MainConent(props) {
   //control modal comment show/hide
@@ -48,7 +49,10 @@ export default function MainConent(props) {
   const [page, setPage] = useState(1);
 
   const [hasMore, setHasMore] = useState(false);
-  console.log("object,", props);
+
+  //create circle progress
+  const [percentage, setPercentage] = useState(0);
+
   //create a new post
   const handleSubmit = async event => {
     setControlPosting(true);
@@ -81,6 +85,7 @@ export default function MainConent(props) {
     if (!controlPosting) {
       setInput("");
       document.getElementById("inputFile").value = "";
+      setPercentage(0);
     }
   };
 
@@ -290,15 +295,22 @@ export default function MainConent(props) {
             rows={4}
             name="content"
             id="input-markup"
-            onChange={e => {
-              console.log("run");
-            }}
-
-            onKeyUp={e => {
+            onKeyDown={e => {
               const inputMarkup = document.getElementById("input-markup")
+                .innerText;
+              setPercentage(inputMarkup.length / 130);
+            }}
+            onKeyUp={e => {
+              let inputMarkup = document.getElementById("input-markup")
                 .innerText;
               setInput(inputMarkup);
               if (input !== inputMarkup) {
+                if(inputMarkup.length > 130 ){
+                  const extraText = inputMarkup.slice(130);
+                  const normalText= inputMarkup.slice(0,129);
+                  const extraTextFormatted = `<span class="extra-text">${inputMarkup.slice(130)}</span>`;
+                  inputMarkup = inputMarkup.replace(extraText, extraTextFormatted)
+                }
                 if (inputMarkup && inputMarkup.length > 0) {
                   let tempString = inputMarkup.split(" ").filter(Boolean);
                   const htmlString = tempString.map(item => {
@@ -320,7 +332,7 @@ export default function MainConent(props) {
           >
             {/* <span style={{color:"grey"}}>What's on your mind ?</span> */}
           </div>
-          <Divider style={{ width: "100%",padding:"0" }} />
+          <Divider style={{ width: "100%", padding: "0" }} />
         </Col>
       </Row>
 
@@ -350,17 +362,23 @@ export default function MainConent(props) {
                 <PhotoCamera />
               </IconButton>
             </label>
-            <p className="d-flex align-items-center">
-              {130 - input.length} characters remaining
-            </p>
-            <button
-              disabled={input.length > 130 || input.length === 0}
-              className="btn-post"
-              type="submit"
-              onClick={e => handleSubmit(e)}
-            >
-              {controlPosting ? <Spinner animation="grow" /> : "Post"}
-            </button>
+            <div className="d-flex align-items-center">
+              {/* {130 - input.length} characters remaining */}
+              <Progress
+                type="circle"
+                percent={percentage * 100}
+                status={percentage > 1 ? "exception" : ""}
+                width={45}
+              />
+              <button
+                disabled={input.length > 130 || input.length === 0}
+                className="btn-post"
+                type="submit"
+                onClick={e => handleSubmit(e)}
+              >
+                {controlPosting ? <Spinner animation="grow" /> : "Post"}
+              </button>
+            </div>
           </div>
         </Col>
       </Row>
