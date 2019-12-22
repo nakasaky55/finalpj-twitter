@@ -285,8 +285,13 @@ ul {
 }
 
 @media only screen and (max-width: 375px){
-
   .image-post img {
     max-height: 200px;
+  }
+}
+
+@media only screen and (max-width: 991px){
+  .image-post img {
+    max-height: 400px;
   }
 }
