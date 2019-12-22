@@ -140,6 +140,10 @@ export default function MainConent(props) {
     setControlPosting(false);
   };
 
+  const removeImage = () => {
+    document.getElementById("inputFile").value = "";
+  };
+
   const encoded = file => {
     const conv = new FileReader();
     conv.onload = fileLoadedEvent => {
@@ -147,9 +151,7 @@ export default function MainConent(props) {
       var newImage = document.createElement("img");
       newImage.src = srcData;
       document.getElementById("dummy").innerHTML = newImage.outerHTML;
-      console.log(
-        document.getElementById("dummy").getElementsByTagName("img")[0].src
-      );
+      console.log(newImage.outerHTML);
       // document.getElementById("txt").value = document.getElementById(
       //   "dummy"
       // ).innerHTML;
@@ -338,6 +340,7 @@ export default function MainConent(props) {
             {/* <span style={{color:"grey"}}>What's on your mind ?</span> */}
           </div>
           <Divider style={{ width: "100%", padding: "0" }} />
+          <div id="dummy" style={{ maxWidth: "100%" }}></div>
         </Col>
       </Row>
 
@@ -419,7 +422,6 @@ export default function MainConent(props) {
           </InfiniteScroll>
         )}
       </Row>
-      <div id="dummy" style={{ display: "none" }}></div>
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>

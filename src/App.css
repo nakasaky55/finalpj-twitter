@@ -151,7 +151,7 @@ ul {
   margin: 0 !important;
 }
 .content {
-  padding:0;
+  padding: 0;
 }
 
 .image-post-detail {
@@ -212,7 +212,7 @@ ul {
 }
 
 .border-left {
-  border-left: 1px solid #0000003b
+  border-left: 1px solid #0000003b;
 }
 
 .profile-number p {
@@ -257,41 +257,47 @@ ul {
   padding-bottom: 8px;
 }
 
-@media only screen and (max-width:441px){
-  .avatar-input > img{
+@media only screen and (max-width: 441px) {
+  .avatar-input > img {
     width: 40px;
-    padding-left:5px;
+    padding-left: 5px;
   }
 }
 
 .btn-post:disabled {
   background-color: #dddce0;
-  color:black;
+  color: black;
 }
-.ant-progress-text{
+.ant-progress-text {
   display: none;
 }
 
-.extra-text{
+.extra-text {
   background-color: red;
 }
 
-.infinite-scroll-component__outerdiv{
-  width:100%;
+.infinite-scroll-component__outerdiv {
+  width: 100%;
 }
 
 .profile-header {
   cursor: pointer;
 }
 
-@media only screen and (max-width: 375px){
+@media only screen and (max-width: 375px) {
   .image-post img {
     max-height: 200px;
   }
 }
 
-@media only screen and (max-width: 991px){
+@media only screen and (max-width: 991px) {
   .image-post img {
     max-height: 500px;
   }
+}
+
+#dummy img {
+  margin-top:5px;
+  width: 150px;
+  height: 70px;
 }
