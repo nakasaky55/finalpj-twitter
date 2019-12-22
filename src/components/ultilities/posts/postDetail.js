@@ -104,7 +104,7 @@ export default function PostDetail(props) {
   }, []);
   return (
     <>
-      <Col sm={12} className="post-detail d-flex flex-column">
+      <Col lg={12} md={12} sm={12} xs={12} className="post-detail d-flex flex-column">
         <div onClick={() => history.push(`/post/${props.post.id}`)}>
           <Row>
             <Col lg={2} md={2} sm={2} xs={2} className="avatar-input">

@@ -89,6 +89,9 @@ export default function Dashboard(props) {
       .sidebar_nav_items >p {
         margin-right: 0px;
       }
+      .sidebar_nav_items {
+        justify-content:center !important;
+      }
     }
 
     

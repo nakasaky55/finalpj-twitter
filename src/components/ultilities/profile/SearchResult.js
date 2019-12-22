@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
+import { Container } from "react-bootstrap";
 
 export default function SearchResult() {
   const param = useParams();
   const [query, setQuery] = useState(null);
   const [list, setList] = useState([]);
   const searchUser = async () => {
-    console.log("run serach")
     const url = await fetch(
       `${process.env.REACT_APP_PATH}/user/search/${query}`,
       {
@@ -36,7 +36,11 @@ export default function SearchResult() {
   }, [param]);
 
   if (list.length == 0) return <h1>No result matches</h1>;
-  return list.map(item => {
-    return <ProfileCard user={item} />;
-  });
+  return (
+    <Container>
+      {list.map(item => {
+        return <ProfileCard user={item} />;
+      })}
+    </Container>
+  );
 }

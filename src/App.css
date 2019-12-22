@@ -275,3 +275,11 @@ ul {
 .extra-text{
   background-color: red;
 }
+
+.infinite-scroll-component__outerdiv{
+  width:100%;
+}
+
+.profile-header {
+  cursor: pointer;
+}

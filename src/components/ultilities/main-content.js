@@ -305,11 +305,16 @@ export default function MainConent(props) {
                 .innerText;
               setInput(inputMarkup);
               if (input !== inputMarkup) {
-                if(inputMarkup.length > 130 ){
+                if (inputMarkup.length > 130) {
                   const extraText = inputMarkup.slice(130);
-                  const normalText= inputMarkup.slice(0,129);
-                  const extraTextFormatted = `<span class="extra-text">${inputMarkup.slice(130)}</span>`;
-                  inputMarkup = inputMarkup.replace(extraText, extraTextFormatted)
+                  const normalText = inputMarkup.slice(0, 129);
+                  const extraTextFormatted = `<span class="extra-text">${inputMarkup.slice(
+                    130
+                  )}</span>`;
+                  inputMarkup = inputMarkup.replace(
+                    extraText,
+                    extraTextFormatted
+                  );
                 }
                 if (inputMarkup && inputMarkup.length > 0) {
                   let tempString = inputMarkup.split(" ").filter(Boolean);

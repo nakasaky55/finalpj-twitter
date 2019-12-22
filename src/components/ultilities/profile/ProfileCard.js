@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Image as ImageCloud, Transformation } from "cloudinary-react";
+import { useHistory } from "react-router-dom";
 
 export default function ProfileCard(props) {
+  const history = useHistory();
   const [controlClick, setControlClick] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(props.user.is_follower);
 
   const follow = async () => {
     setControlClick(true);
@@ -18,7 +21,7 @@ export default function ProfileCard(props) {
       }
     );
     const data = await url.json();
-    if(data.message == "success"){
+    if (data.message == "success") {
       props.user.is_follower = true;
     }
   };
@@ -37,15 +40,18 @@ export default function ProfileCard(props) {
       }
     );
     const data = await url.json();
-    if(data.message == "success"){
-      props.user.is_follower = false;
+    if (data.message == "success") {
+      setIsFollowing(!isFollowing);
     }
   };
 
   return (
     <div className="d-flex justify-content-between">
       {/* Left    */}
-      <div>
+      <div
+        className="profile-header"
+        onClick={() => history.push(`/user/${props.user.user_id}`)}
+      >
         <ImageCloud
           style={{ margin: "0px" }}
           cloudName="hslqp9lo2"
@@ -66,7 +72,7 @@ export default function ProfileCard(props) {
         </div>
       </div>
       <div>
-        {props.user.is_follower ? (
+        {isFollowing ? (
           <button className="btn-follow" onClick={unfollow}>
             Following
           </button>
