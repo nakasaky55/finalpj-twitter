@@ -184,8 +184,7 @@ export default function PostDetail(props) {
               md={{ span: 10, offset: 2 }}
               sm={{ span: 10, offset: 2 }}
               xs={{ span: 10, offset: 2 }}
-              className="d-flex justify-content-center"
-              // style={{ maxWidth: "100%" }}
+              className="d-flex justify-content-center image-post"
             >
               <ImageCloud
                 cloudName="hslqp9lo2"

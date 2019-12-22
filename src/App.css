@@ -283,3 +283,10 @@ ul {
 .profile-header {
   cursor: pointer;
 }
+
+@media only screen and (max-width: 375px){
+
+  .image-post img {
+    max-height: 200px;
+  }
+}
