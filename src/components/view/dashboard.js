@@ -10,7 +10,8 @@ import Profile from "../ultilities/profile/profile";
 import Trending from "../ultilities/trending";
 import Explore from "../ultilities/posts/explore";
 import TagClick from "../ultilities/clickTrending/TagClick";
-import SearchResult from "../ultilities/profile/SearchResult"
+import SearchResult from "../ultilities/profile/SearchResult";
+import Search from "../ultilities/Search"
 
 export default function Dashboard(props) {
   function mapStyles(styles) {
@@ -77,7 +78,9 @@ export default function Dashboard(props) {
         {`
 
     @media only screen and (max-width: 991px) {
-      
+      #search-section {
+        display: flex !important;
+      }
       .sidebar_nav_text{
         display:none;
         
@@ -107,6 +110,10 @@ export default function Dashboard(props) {
     .dashboard_logo{
       width:47px;
       height: 47px;
+    }
+
+    #search-section {
+      display:none;
     }
 
     .sidebar-sm{
@@ -238,7 +245,6 @@ export default function Dashboard(props) {
               <div className="sidebar_nav_items">
                 <svg
                   viewBox="0 0 24 24"
-
                   className="svg-twitter"
                   onClick={() => history.push("/")}
                 >
@@ -267,6 +273,16 @@ export default function Dashboard(props) {
                 <div className="sidebar_nav_text">
                   <Link to="/explore">
                     <span>Explore</span>
+                  </Link>
+                </div>
+              </Link>
+              <Link to="/search" className="sidebar_nav_items" id="search-section">
+                <div className="sidebar_nav_icon">
+                <i class="fas fa-search"></i>
+                </div>
+                <div className="sidebar_nav_text">
+                  <Link to="/search">
+                    <span>Search</span>
                   </Link>
                 </div>
               </Link>
@@ -318,10 +334,14 @@ export default function Dashboard(props) {
                 render={() => <CurrentPost user={props.user} />}
               />
               <Route
-              exact
-              path="/search/:input"
-              render={() => <SearchResult />}
-
+                exact
+                path="/search/:input"
+                render={() => <SearchResult />}
+              />
+              <Route
+                exact
+                path="/search"
+                render={() => <Search />}
               />
               <Route
                 exact
