@@ -48,7 +48,7 @@ export default function Retweet(props) {
     getCurrentPost();
   }, [props]);
 
-  if (currProgressRetweet) return <h1>Loading</h1>;
+  // if (currProgressRetweet) return <h1>Loading</h1>;
   return (
     <Row>
       <Col lg={2} md={2} sm={2} xs={2} className="avatar-input">

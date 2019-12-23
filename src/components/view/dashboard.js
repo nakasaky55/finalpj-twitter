@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, Switch, Route, Link } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { ClipLoader } from "react-spinners";
@@ -11,7 +11,7 @@ import Trending from "../ultilities/trending";
 import Explore from "../ultilities/posts/explore";
 import TagClick from "../ultilities/clickTrending/TagClick";
 import SearchResult from "../ultilities/profile/SearchResult";
-import Search from "../ultilities/Search"
+import Search from "../ultilities/Search";
 
 export default function Dashboard(props) {
   function mapStyles(styles) {
@@ -48,6 +48,8 @@ export default function Dashboard(props) {
   } else {
     // console.log(props.user);
   }
+
+  const [change, setChange] = useState("");
 
   const doLogout = async () => {
     console.log(`${process.env.REACT_APP_PATH}/user/logout`);
@@ -276,9 +278,13 @@ export default function Dashboard(props) {
                   </Link>
                 </div>
               </Link>
-              <Link to="/search" className="sidebar_nav_items" id="search-section">
+              <Link
+                to="/search"
+                className="sidebar_nav_items"
+                id="search-section"
+              >
                 <div className="sidebar_nav_icon">
-                <i class="fas fa-search"></i>
+                  <i class="fas fa-search"></i>
                 </div>
                 <div className="sidebar_nav_text">
                   <Link to="/search">
@@ -338,11 +344,7 @@ export default function Dashboard(props) {
                 path="/search/:input"
                 render={() => <SearchResult />}
               />
-              <Route
-                exact
-                path="/search"
-                render={() => <Search />}
-              />
+              <Route exact path="/search" render={() => <Search />} />
               <Route
                 exact
                 path="/user/:id"
@@ -362,13 +364,14 @@ export default function Dashboard(props) {
                     user={props.user}
                     loadUser={props.loadUser}
                     avaUrl={props.user.user.ava_url}
+                    setChange={setChange}
                   />
                 )}
               />
             </Switch>
           </Col>
           <Col className="sb-child trending d-none d-lg-block border-left">
-            <Trending />
+            <Trending change={change} />
           </Col>
         </Row>
       </Container>

@@ -7,7 +7,7 @@ import { Divider } from "@material-ui/core";
 
 import { useHistory } from "react-router-dom";
 
-export default function Trending() {
+export default function Trending(props) {
   const [search, setSearch] = useState(null);
 
   const history = useHistory();
@@ -42,13 +42,19 @@ export default function Trending() {
     document.title = "Trending";
   }, []);
 
+  useEffect(() => {
+    setLoadingTrending(true)
+    getTrending();
+    console.log("run when change change")
+  }, [props.change]);
+
   return (
     <div className="d-flex flex-column ">
       <div style={{ marginTop: "10px" }}>
         <form
           onSubmit={e => {
             e.preventDefault();
-            history.push(`/search/`+search);
+            history.push(`/search/` + search);
           }}
         >
           <FormControl
@@ -76,7 +82,13 @@ export default function Trending() {
           />
         ) : (
           dataTrending.map((item, i) => {
-            return <TrendingHastag data={item} index={i} />;
+            return (
+              <TrendingHastag
+                key={`trendingHastag-${i}`}
+                data={item}
+                index={i}
+              />
+            );
           })
         )}
       </div>

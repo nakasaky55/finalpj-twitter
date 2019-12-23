@@ -80,6 +80,7 @@ export default function MainConent(props) {
     if (data.message == "created") {
       setPosts([]);
       getPosts(1);
+      props.setChange(input)
     }
     document.getElementById("input-markup").innerHTML = "";
     if (!controlPosting) {
@@ -406,7 +407,7 @@ export default function MainConent(props) {
             {posts.map(post => {
               return (
                 <PostDetail
-                  key={post.id}
+                  key={`maincontent-${post.id}`}
                   post={post}
                   token={sessionStorage.getItem("token")}
                   user={props.user}
