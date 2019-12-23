@@ -1,13 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Col, Image, Spinner, Row, Dropdown } from "react-bootstrap";
+import {
+  Col,
+  Image,
+  Spinner,
+  Row,
+  Dropdown,
+  Modal,
+  Button,
+  InputGroup,
+  FormControl
+} from "react-bootstrap";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { Image as ImageCloud, Transformation } from "cloudinary-react";
 import Divider from "@material-ui/core/Divider";
-import { Select, MenuItem } from "@material-ui/core";
+
+import Retweet from "../posts/Retweet";
 
 export default function PostDetail(props) {
   const history = useHistory();
+
+  const [retweet, setRetweet] = useState("");
+  const [retweetProgress, setRetweetProgress] = useState(false);
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => {
+    setShow(true);
+  };
 
   const [likeState, setLikeState] = useState(true);
   const [progress, setProgress] = useState(false);
@@ -98,14 +119,82 @@ export default function PostDetail(props) {
     }
   };
 
+  const retweetFunction = async () => {
+    setRetweetProgress(true);
+    const url = await fetch(
+      `${process.env.REACT_APP_PATH}/posts/retweet/${props.post.id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Token " + sessionStorage.getItem("token")
+        },
+        body: JSON.stringify({
+          input: retweet
+        })
+      }
+    );
+    const resp = await url.json();
+    if (resp.message == "success") {
+      handleClose();
+      setRetweetProgress(false);
+      props.getPosts(1);
+    }
+  };
+
+  const unRetweetFunction = async e => {
+    e.preventDefault();
+    e.stopPropagation();
+    setRetweetProgress(true);
+    const url = await fetch(
+      `${process.env.REACT_APP_PATH}/posts/unretweet/${props.post.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Token " + sessionStorage.getItem("token")
+        },
+        body: JSON.stringify({
+          input: retweet
+        })
+      }
+    );
+    const resp = await url.json();
+    if (resp.state) {
+      props.getPosts(1);
+      setRetweetProgress(false);
+    }
+  };
+
+  const doRetweet = e => {
+    e.stopPropagation();
+    handleShow();
+  };
+
   useEffect(() => {
     contentFormat();
     checkLike();
   }, []);
   return (
     <>
-      <Col lg={12} md={12} sm={12} xs={12} className="post-detail d-flex flex-column">
+      <Col
+        lg={12}
+        md={12}
+        sm={12}
+        xs={12}
+        className="post-detail d-flex flex-column"
+      >
         <div onClick={() => history.push(`/post/${props.post.id}`)}>
+          <p
+            className="text-muted font-weight-lighter"
+            style={{ fontSize: "16px" }}
+          >
+            {props.post.retweet.indexOf(props.userid) != -1
+              ? "You retweeted this post"
+              : ""}
+          </p>
           <Row>
             <Col lg={2} md={2} sm={2} xs={2} className="avatar-input">
               <ImageCloud
@@ -142,6 +231,13 @@ export default function PostDetail(props) {
                   className="font-weight-normal"
                   dangerouslySetInnerHTML={contentFormat()}
                 ></p>
+                <div>
+                  {props.post.original_post ? (
+                    <Retweet original_id={props.post.original_post} />
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
               <div class="dropdown dropleft" onClick={e => e.stopPropagation()}>
                 <a
@@ -224,35 +320,28 @@ export default function PostDetail(props) {
                 )}
 
                 <button className="btn-function">
-                  <div class="dropdown dropleft">
-                    <a
-                      href="#"
-                      role="button"
-                      id="dropdownMenuLink"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                      style={{color:"black"}}
-                    >
+                  <a href="#" role="button" style={{ color: "black" }}>
+                    {retweetProgress ? (
+                      <Spinner animation="border" variant="success" />
+                    ) : (
                       <i
-                        className="fas fa-retweet"
+                        className={
+                          props.post.retweet.indexOf(props.userid) == -1
+                            ? "fas fa-retweet"
+                            : "fas fa-retweet retweeted"
+                        }
                         id="demo-simple-select-label"
-                        onClick={e => e.stopPropagation()}
-                      ></i>
-                    </a>
-
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuLink"
-                    >
-                      <a class="dropdown-item" href="#">
-                        Retweet
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        Retweet with comment
-                      </a>
-                    </div>
-                  </div>
+                        onClick={e => {
+                          props.post.retweet.indexOf(props.userid) == -1
+                            ? doRetweet(e)
+                            : unRetweetFunction(e);
+                        }}
+                      >
+                        {" "}
+                        {props.post.retweet.length}{" "}
+                      </i>
+                    )}
+                  </a>
                 </button>
                 <button
                   className="btn-function"
@@ -270,6 +359,30 @@ export default function PostDetail(props) {
         </div>
       </Col>
       <Divider style={{ width: "100%" }} />
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Retweet this post</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {props.post.content}
+          <InputGroup className="mt-3">
+            <FormControl
+              onChange={e => setRetweet(e.target.value)}
+              placeholder="Enter your retweet"
+              aria-label="Enter your retweet"
+            />
+          </InputGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          {retweet.length == 0 ? (
+            ""
+          ) : (
+            <Button variant="success" onClick={retweetFunction}>
+              Retweet
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

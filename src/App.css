@@ -284,6 +284,10 @@ ul {
   cursor: pointer;
 }
 
+.retweeted{
+  color: green;
+}
+
 @media only screen and (max-width: 375px) {
   .image-post img {
     max-height: 200px;
