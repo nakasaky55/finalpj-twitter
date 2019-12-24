@@ -50,7 +50,13 @@ export default function Retweet(props) {
 
   // if (currProgressRetweet) return <h1>Loading</h1>;
   return (
-    <Row>
+    <Row
+      className="retweet-section"
+      onClick={e => {
+        e.stopPropagation();
+        history.push(`/post/${props.original_id}`);
+      }}
+    >
       <Col lg={2} md={2} sm={2} xs={2} className="avatar-input">
         <ImageCloud
           style={{ margin: "0px" }}
@@ -95,9 +101,7 @@ export default function Retweet(props) {
         </div>
       </Col>
       <Row>
-        <Col
-          className="d-flex justify-content-center image-post"
-        >
+        <Col className="d-flex justify-content-center image-post">
           <ImageCloud
             cloudName="hslqp9lo2"
             publicId={currPost.content_img ? currPost.content_img : ""}

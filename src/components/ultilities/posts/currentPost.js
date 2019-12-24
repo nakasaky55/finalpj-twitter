@@ -7,6 +7,7 @@ import Divider from "@material-ui/core/Divider";
 
 import { Image as ImageCloud, Transformation } from "cloudinary-react";
 import Comment from "../posts/comment";
+import Retweet from "./Retweet";
 
 export default function CurrentPost(props) {
   const param = useParams();
@@ -272,6 +273,18 @@ export default function CurrentPost(props) {
             >
               <Transformation radius="25" crop="fill" />
             </ImageCloud>
+          </Col>
+          <Col
+            lg={{ span: 10, offset: 2 }}
+            md={{ span: 10, offset: 2 }}
+            sm={{ span: 10, offset: 2 }}
+            xs={{ span: 10, offset: 2 }}
+          >
+            {currPost.original_post ? (
+              <Retweet original_id={currPost.original_post} />
+            ) : (
+              ""
+            )}
           </Col>
           <Col
             lg={12}
