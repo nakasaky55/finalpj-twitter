@@ -23,6 +23,7 @@ export default function ProfileCard(props) {
     const data = await url.json();
     if (data.message == "success") {
       props.user.is_follower = true;
+      setIsFollowing(!isFollowing);
     }
   };
 
