@@ -15,6 +15,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 
 import {
   Image as ImageCloudinary,
@@ -22,7 +23,7 @@ import {
   Transformation,
   CloudinaryContext
 } from "cloudinary-react";
-import { Divider } from "@material-ui/core";
+import { Divider, Popover, Popper } from "@material-ui/core";
 import { Progress } from "antd";
 
 export default function MainConent(props) {
@@ -53,6 +54,25 @@ export default function MainConent(props) {
   //create circle progress
   const [percentage, setPercentage] = useState(0);
 
+  //popover
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = event => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+  const handleClosePop = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  //insert an icon
+  const insertIcon = icon => {
+    let markup = document.getElementById("input-markup").innerHTML;
+    markup = markup + icon;
+    setInput(markup)
+    document.getElementById("input-markup").innerHTML = markup;
+  };
+
   //create a new post
   const handleSubmit = async event => {
     setControlPosting(true);
@@ -80,7 +100,7 @@ export default function MainConent(props) {
     if (data.message == "created") {
       setPosts([]);
       getPosts(1);
-      props.setChange(input)
+      props.setChange(input);
     }
     document.getElementById("input-markup").innerHTML = "";
     if (!controlPosting) {
@@ -129,7 +149,7 @@ export default function MainConent(props) {
       }
     );
     const data = await resp.json();
-    if (data.has_next == true) {
+    if (data.has_next == true && data.data_received.length > 0) {
       setPage(data.page);
       setHasMore(true);
     } else {
@@ -353,34 +373,105 @@ export default function MainConent(props) {
           xs={{ span: 10, offset: 2 }}
         >
           <div className="d-flex justify-content-between maincontent_input_description">
-            <input
-              type="file"
-              name="avatar"
-              id="inputFile"
-              onChange={e => {
-                encoded(e.target.files[0]);
-              }}
-              style={{ display: "none" }}
-            ></input>
-            <label htmlFor="inputFile">
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-              >
-                <PhotoCamera />
-              </IconButton>
-            </label>
+            <div className="d-flex">
+              <input
+                type="file"
+                name="avatar"
+                id="inputFile"
+                onChange={e => {
+                  encoded(e.target.files[0]);
+                }}
+                style={{ display: "none" }}
+              ></input>
+              <label htmlFor="inputFile">
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                >
+                  <PhotoCamera />
+                </IconButton>
+              </label>
+
+              <div class="dropdown dropup">
+                <a
+                  role="button"
+                  id="dropdownMenuLink"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <IconButton color="primary" component="span">
+                    <InsertEmoticonIcon />
+                  </IconButton>
+                </a>
+
+                <div
+                  class="dropdown-menu"
+                  aria-labelledby="dropdownMenuLink"
+                  style={{ marginTop: "15px" }}
+                >
+                  <a
+                    class="dropdown-item"
+                    onClick={e => insertIcon(e.target.innerHTML)}
+                  >
+                    &#128512;
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    onClick={e => insertIcon(e.target.innerHTML)}
+                  >
+                    &#128513;
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    onClick={e => insertIcon(e.target.innerHTML)}
+                  >
+                    &#128514;
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    onClick={e => insertIcon(e.target.innerHTML)}
+                  >
+                    &#128515;
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    onClick={e => insertIcon(e.target.innerHTML)}
+                  >
+                    &#128516;
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    onClick={e => insertIcon(e.target.innerHTML)}
+                  >
+                    &#128517;
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    onClick={e => insertIcon(e.target.innerHTML)}
+                  >
+                    &#128518;
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    onClick={e => insertIcon(e.target.innerHTML)}
+                  >
+                    &#128519;
+                  </a>
+                </div>
+              </div>
+            </div>
             <div className="d-flex align-items-center">
               {/* {130 - input.length} characters remaining */}
               <Progress
                 type="circle"
                 percent={percentage * 100}
                 status={percentage > 1 ? "exception" : ""}
-                width={45}
+                width={30}
               />
               <button
-                disabled={input.length > 130 || input.length === 0}
+                // disabled={input.length > 130 || input.length === 0}
                 className="btn-post"
                 type="submit"
                 onClick={e => handleSubmit(e)}

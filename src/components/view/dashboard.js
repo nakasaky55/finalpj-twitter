@@ -12,6 +12,7 @@ import Explore from "../ultilities/posts/explore";
 import TagClick from "../ultilities/clickTrending/TagClick";
 import SearchResult from "../ultilities/profile/SearchResult";
 import Search from "../ultilities/Search";
+import EditPost from "../ultilities/posts/EditPost";
 
 export default function Dashboard(props) {
   function mapStyles(styles) {
@@ -338,6 +339,12 @@ export default function Dashboard(props) {
                 exact
                 path="/post/:id"
                 render={() => <CurrentPost user={props.user} />}
+              />
+
+              <Route
+              exact
+              path="/post/edit/:id"
+              render={() => <EditPost userid={props.user.user.id} />}
               />
               <Route
                 exact

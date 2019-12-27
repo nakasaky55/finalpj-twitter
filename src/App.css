@@ -1,3 +1,7 @@
+:root {
+  --test: white;
+}
+
 .App {
   text-align: center;
   font-weight: lighter;
@@ -16,6 +20,14 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.show {
+  display: flex !important;
+  flex-wrap: wrap;
+}
+.dropdown-item {
+  flex-basis: 30px !important;
 }
 
 .App-link {
@@ -284,11 +296,11 @@ ul {
   cursor: pointer;
 }
 
-.retweeted{
+.retweeted {
   color: green;
 }
 
-.retweet-section{
+.retweet-section {
   cursor: pointer;
 }
 
@@ -305,7 +317,18 @@ ul {
 }
 
 #dummy img {
-  margin-top:5px;
+  margin-top: 5px;
   width: 150px;
   height: 70px;
 }
+
+#edit-markup {
+  max-width: 100%;
+}
+
+body {
+  background-color: var(--test) !important;
+}
+
+/* var html = document.getElementsByTagName('html')[0];
+html.style.cssText = "--test: red"; */

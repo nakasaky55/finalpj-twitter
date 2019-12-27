@@ -128,7 +128,13 @@ export default function Login(props) {
       <style type="text/css">
         {`
         .btn-signup {
-          border: none
+          border: none;
+          color: blue;
+          background-color: white;
+        }
+
+        .btn-signup:hover{
+          text-decoration: underline;
         }
         `}
       </style>
