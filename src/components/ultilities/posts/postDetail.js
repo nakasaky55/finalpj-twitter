@@ -260,27 +260,34 @@ export default function PostDetail(props) {
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {props.userid == props.post.author_id ? (
-                    <>
+                    <div className="dropdown-item">
                       <button
                         className="dropdown-item"
+                        style={{ padding: "0px" }}
                         onClick={() => handleShowDel()}
                       >
                         {" "}
                         <i className="fa fa-trash-alt"></i>{" "}
                         <span style={{ color: "red" }}>Delete</span>
                       </button>
-                      <button className="dropdown-item" onClick={() => {
-                        history.push(`/post/edit/${props.post.id}`)
-                      }}>Edit</button>
-                    </>
+                      <button
+                        className="dropdown-item"
+                        style={{ padding: "0px" }}
+                        onClick={() => {
+                          history.push(`/post/edit/${props.post.id}`);
+                        }}
+                      >
+                        Edit
+                      </button>
+                    </div>
                   ) : (
                     ""
                   )}
 
-                  <a class="dropdown-item" href="#">
+                  <a className="dropdown-item" href="#">
                     Another action
                   </a>
-                  <a class="dropdown-item" href="#">
+                  <a className="dropdown-item" href="#">
                     Something else here
                   </a>
                 </div>
@@ -400,8 +407,12 @@ export default function PostDetail(props) {
         <Modal.Body>
           <p>You really want to delete this tweet ?</p>
           <div className="d-flex justify-content-around">
-          <Button variant="danger" onClick={deleteThisPost}>Delete</Button>
-          <Button variant="primary" onClick={handleCloseDel}>Close</Button>
+            <Button variant="danger" onClick={deleteThisPost}>
+              Delete
+            </Button>
+            <Button variant="primary" onClick={handleCloseDel}>
+              Close
+            </Button>
           </div>
         </Modal.Body>
       </Modal>
