@@ -78,7 +78,7 @@ export default function Retweet(props) {
           />
         </ImageCloud>
       </Col>
-      <Col>
+      <Col lg={10} md={10} sm={10} xs={10}>
         <div>
           <b
             onClick={e => {
