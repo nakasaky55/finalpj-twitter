@@ -263,19 +263,19 @@ export default function PostDetail(props) {
                     <div className="d-flex flex-column">
                       <div
                         className="dropdown-item"
-                        onClick={() => handleShowDel()}
-                      >
-                        {" "}
-                        <i className="fa fa-trash-alt"></i>{" "}
-                        <span style={{ color: "red" }}>Delete</span>
-                      </div>
-                      <div
-                        className="dropdown-item"
                         onClick={() => {
                           history.push(`/post/edit/${props.post.id}`);
                         }}
                       >
                         Edit
+                      </div>
+                      <div
+                        className="dropdown-item"
+                        onClick={() => handleShowDel()}
+                      >
+                        {" "}
+                        <i className="fa fa-trash-alt"></i>{" "}
+                        <span style={{ color: "red" }}>Delete</span>
                       </div>
                     </div>
                   ) : (
