@@ -107,6 +107,7 @@ export default function MainConent(props) {
       setInput("");
       document.getElementById("inputFile").value = "";
       setPercentage(0);
+      document.getElementById('dummy').innerHTML = "";
     }
   };
 

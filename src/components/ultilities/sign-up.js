@@ -170,8 +170,8 @@ export default function Signup(props) {
         </p>
         <h1>See what’s happening in the world right now</h1>
         <hr></hr>
-        <Toast
-          show={showDuplicated}
+        {/* <Toast
+          show={showDuplicated=="none" ? false:true}
           onClose={toggleCloseDuplicated}
           style={{ display: showDuplicated }}
         >
@@ -183,8 +183,7 @@ export default function Signup(props) {
             />
             <strong className="mr-auto">Email is taken</strong>
           </Toast.Header>
-          {/* <Toast.Body>You're successfully sign up.</Toast.Body> */}
-        </Toast>
+        </Toast> */}
         <form onSubmit={e => {
           console.log("submit")
           handleSubmit(e);

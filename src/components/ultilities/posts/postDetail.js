@@ -260,25 +260,23 @@ export default function PostDetail(props) {
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {props.userid == props.post.author_id ? (
-                    <div className="dropdown-item">
-                      <button
+                    <div className="d-flex flex-column">
+                      <div
                         className="dropdown-item"
-                        style={{ padding: "0px" }}
                         onClick={() => handleShowDel()}
                       >
                         {" "}
                         <i className="fa fa-trash-alt"></i>{" "}
                         <span style={{ color: "red" }}>Delete</span>
-                      </button>
-                      <button
+                      </div>
+                      <div
                         className="dropdown-item"
-                        style={{ padding: "0px" }}
                         onClick={() => {
                           history.push(`/post/edit/${props.post.id}`);
                         }}
                       >
                         Edit
-                      </button>
+                      </div>
                     </div>
                   ) : (
                     ""

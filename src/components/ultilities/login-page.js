@@ -54,10 +54,10 @@ export default function Login(props) {
       sessionStorage.setItem("token", data.token);
       console.log("data returns from api", data.state);
       goDashboard();
-    }else {
+    } else {
       setVariant("error");
       setMessageCustom(data.message);
-      setOpen("flex")
+      setOpen("flex");
     }
   };
 
@@ -146,10 +146,9 @@ export default function Login(props) {
           </p>
           <h1>See what’s happening in the world right now</h1>
           <hr></hr>
-
           <Toast
-            show={props.showA}
-            onClose={props.toggleShowA}
+            show={props.showA=="none" ? false:true}
+            onClose={props.toggleShowA("none")}
             style={{ display: props.showA }}
           >
             <Toast.Header className="bg-success text-white">
@@ -160,7 +159,6 @@ export default function Login(props) {
               />
               <strong className="mr-auto">Successfully sign up</strong>
             </Toast.Header>
-            {/* <Toast.Body>You're successfully sign up.</Toast.Body> */}
           </Toast>
           <form
             onSubmit={e => {
@@ -201,7 +199,7 @@ export default function Login(props) {
                 marginTop: "10px",
                 backgroundColor: "#1da1f2",
                 color: "white",
-                margin:"10px 0"
+                margin: "10px 0"
               }}
             >
               Sign in
