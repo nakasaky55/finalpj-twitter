@@ -4,6 +4,7 @@ import { Col, Row, Button } from "react-bootstrap";
 import { Image as ImageCloudinary, Transformation } from "cloudinary-react";
 import { Divider, IconButton } from "@material-ui/core";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 
 export default function EditPost(props) {
   const param = useParams();
@@ -30,6 +31,13 @@ export default function EditPost(props) {
       range.select(); //Select the range (make it the visible selection
     }
   }
+
+  const insertIcon = icon => {
+    let markup = document.getElementById("edit-markup").innerHTML;
+    markup = markup + icon;
+    setEditInput(markup);
+    document.getElementById("edit-markup").innerHTML = markup;
+  };
 
   //get current post
   const getCurrentPost = async () => {
@@ -181,25 +189,95 @@ export default function EditPost(props) {
           className="d-flex justify-content-between align-items-center"
           style={{ marginTop: "10px" }}
         >
-          <div>
-            <input
-              type="file"
-              name="avatar"
-              id="inputEditFile"
-              onChange={e => {
-                encoded(e.target.files[0]);
-              }}
-              style={{ display: "none" }}
-            ></input>
-            <label htmlFor="inputEditFile">
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
+          <div className="d-flex">
+            <div>
+              <input
+                type="file"
+                name="avatar"
+                id="inputEditFile"
+                onChange={e => {
+                  encoded(e.target.files[0]);
+                }}
+                style={{ display: "none" }}
+              ></input>
+              <label htmlFor="inputEditFile">
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                >
+                  <PhotoCamera />
+                </IconButton>
+              </label>
+            </div>
+            <div class="dropdown dropup">
+              <a
+                role="button"
+                id="dropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
               >
-                <PhotoCamera />
-              </IconButton>
-            </label>
+                <IconButton color="primary" component="span">
+                  <InsertEmoticonIcon />
+                </IconButton>
+              </a>
+
+              <div
+                class="dropdown-menu"
+                aria-labelledby="dropdownMenuLink"
+                style={{ marginTop: "15px" }}
+              >
+                <a
+                  class="dropdown-item"
+                  onClick={e => insertIcon(e.target.innerHTML)}
+                >
+                  &#128512;
+                </a>
+                <a
+                  class="dropdown-item"
+                  onClick={e => insertIcon(e.target.innerHTML)}
+                >
+                  &#128513;
+                </a>
+                <a
+                  class="dropdown-item"
+                  onClick={e => insertIcon(e.target.innerHTML)}
+                >
+                  &#128514;
+                </a>
+                <a
+                  class="dropdown-item"
+                  onClick={e => insertIcon(e.target.innerHTML)}
+                >
+                  &#128515;
+                </a>
+                <a
+                  class="dropdown-item"
+                  onClick={e => insertIcon(e.target.innerHTML)}
+                >
+                  &#128516;
+                </a>
+                <a
+                  class="dropdown-item"
+                  onClick={e => insertIcon(e.target.innerHTML)}
+                >
+                  &#128517;
+                </a>
+                <a
+                  class="dropdown-item"
+                  onClick={e => insertIcon(e.target.innerHTML)}
+                >
+                  &#128518;
+                </a>
+                <a
+                  class="dropdown-item"
+                  onClick={e => insertIcon(e.target.innerHTML)}
+                >
+                  &#128519;
+                </a>
+              </div>
+            </div>
           </div>
           <Button onClick={editPost}>Edit</Button>
         </Col>
