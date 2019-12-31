@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, Switch, Route, Link } from "react-router-dom";
+import { useHistory, Switch, Route, Link, useParams } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { ClipLoader } from "react-spinners";
 import MainContent from "../ultilities/main-content";
@@ -15,6 +15,8 @@ import Search from "../ultilities/Search";
 import EditPost from "../ultilities/posts/EditPost";
 
 export default function Dashboard(props) {
+  const param = useParams();
+  console.log(param)
   function mapStyles(styles) {
     return {
       opacity: styles.opacity,
@@ -317,9 +319,16 @@ export default function Dashboard(props) {
               </Link>
 
               <div className="sidebar_nav_items">
-                <Button className="btn-custom tweet-btn ">
+                <Button
+                  className="btn-custom tweet-btn "
+                  onClick={() => {
+                    const el = document.getElementById("tweet-section");
+                    el.scrollIntoView();
+                    el.focus();
+                  }}
+                >
                   <i className="fas fa-feather"></i>
-                  <span className="sidebar_nav_text tweet-text">Tweet</span>
+                  <span className="sidebar_nav_text tweet-text">Tweet </span>
                 </Button>
               </div>
               <div className="sidebar_nav_items">
@@ -342,9 +351,9 @@ export default function Dashboard(props) {
               />
 
               <Route
-              exact
-              path="/post/edit/:id"
-              render={() => <EditPost userid={props.user.user.id} />}
+                exact
+                path="/post/edit/:id"
+                render={() => <EditPost userid={props.user.user.id} />}
               />
               <Route
                 exact

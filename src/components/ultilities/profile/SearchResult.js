@@ -41,7 +41,7 @@ export default function SearchResult() {
   if (list.length == 0 && dataState == false) return <h1>No result matched</h1>;
   if (list.length == 0) return <List className="loader-custom" />;
   return (
-    <Container>
+    <Container style={{paddingTop:"10px"}}>
       {list.map(item => {
         return <ProfileCard user={item} />;
       })}

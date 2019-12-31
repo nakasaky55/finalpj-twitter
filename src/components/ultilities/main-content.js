@@ -291,11 +291,11 @@ export default function MainConent(props) {
             `}
       </style>
       <Row>
-        <Col lg={12} md={12} sm={12} xs={12}>
+        <Col lg={12} md={12} sm={12} xs={12} id="tweet-section">
           <h1 className="font-weight-bold">Lastest Tweet</h1>
         </Col>
         <Divider style={{ width: "100%", marginBottom: "10px " }} />
-        <Col className="col-2 avatar-input">
+        <Col className="col-2 avatar-input" >
           <ImageCloudinary
             cloudName="hslqp9lo2"
             publicId={props.avaUrl ? props.avaUrl : ""}

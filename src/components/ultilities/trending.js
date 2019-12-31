@@ -92,7 +92,7 @@ export default function Trending(props) {
           })
         )}
       </div>
-      <div>Credit</div>
+      <div className="text-muted" style={{fontSize:"16px"}}>© 2019 <a href="https://khofolio.netlify.com" target="_blank">KhoaNguyen</a>, FS.</div>
     </div>
   );
 }

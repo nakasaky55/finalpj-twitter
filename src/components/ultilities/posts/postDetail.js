@@ -195,14 +195,14 @@ export default function PostDetail(props) {
         className="post-detail d-flex flex-column"
       >
         <div onClick={() => history.push(`/post/${props.post.id}`)}>
-          <p
+          {/* <p
             className="text-muted font-weight-lighter"
             style={{ fontSize: "16px" }}
           >
             {props.post.retweet.indexOf(props.userid) != -1
               ? "You retweeted this post"
               : ""}
-          </p>
+          </p> */}
           <Row>
             <Col lg={2} md={2} sm={2} xs={2} className="avatar-input">
               <ImageCloud
