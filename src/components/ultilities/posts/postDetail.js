@@ -344,6 +344,7 @@ export default function PostDetail(props) {
                     ) : (
                       <i
                         className={
+                          props.post.retweet &&
                           props.post.retweet.indexOf(props.userid) == -1
                             ? "fas fa-retweet"
                             : "fas fa-retweet retweeted"
@@ -356,7 +357,7 @@ export default function PostDetail(props) {
                         }}
                       >
                         {" "}
-                        {props.post.retweet.length}{" "}
+                        { props.post.retweet && props.post.retweet.length}{" "}
                       </i>
                     )}
                   </a>
